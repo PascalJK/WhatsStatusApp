@@ -12,6 +12,7 @@
         <Style x:Key="FontLabelStyle" TargetType="Label">
             <Setter Property="FontFamily" Value="MDI" />
             <Setter Property="FontSize" Value="35" />
+            <Setter Property="VerticalTextAlignment" Value="Center" />
         </Style>
     </ContentPage.Resources>
 
@@ -21,10 +22,22 @@
         RowDefinitions="auto, *, auto">
         <HorizontalStackLayout
             Grid.Column="1"
-            Padding="0,5,5,0"
+            Padding="0,10,10,5"
             Spacing="15">
-            <Label Style="{StaticResource FontLabelStyle}" Text="{x:Static fonts:MaterialDesignIcons.CapsLock}" />
-            <Label Style="{StaticResource FontLabelStyle}" Text="{x:Static fonts:MaterialDesignIcons.FormatText}" />
+            <Label
+                FontSize="30"
+                Style="{StaticResource FontLabelStyle}"
+                Text="Abc"
+                TextTransform="{Binding StatusTextTransform}">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ChangeStatusTextTransformCommand}" />
+                </Label.GestureRecognizers>
+            </Label>
+            <Label Style="{StaticResource FontLabelStyle}" Text="{x:Static fonts:MaterialDesignIcons.FormatText}">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ChangeStatusFontCommand}" />
+                </Label.GestureRecognizers>
+            </Label>
             <Label Style="{StaticResource FontLabelStyle}" Text="{x:Static fonts:MaterialDesignIcons.Palette}">
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding ChangeStatusBackgroundColorCommand}" />
@@ -40,10 +53,17 @@
             <Editor
                 x:Name="editor"
                 AutoSize="TextChanges"
-                FontSize="32"
+                FontFamily="{Binding StatusFont}"
+                FontSize="35"
                 HorizontalTextAlignment="Center"
+                Keyboard="Chat"
+                MaxLength="{Binding StatusTextLimit}"
                 Placeholder="Type a status"
+                PlaceholderColor="LightGray"
                 SemanticProperties.Hint="Type a status"
+                Text="{Binding StatusText}"
+                TextColor="White"
+                TextTransform="{Binding StatusTextTransform}"
                 VerticalTextAlignment="Center" />
         </ScrollView>
 
