@@ -53,7 +53,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Fonts\DancingScript-Regular.ttf" />
+	  <None Remove="Resources\Fonts\IndieFlower-Regular.ttf" />
 	  <None Remove="Resources\Fonts\materialdesignicons.ttf" />
+	  <None Remove="Resources\Fonts\Pacifico-Regular.ttf" />
+	  <None Remove="Resources\Fonts\PlayfairDisplay-Regular.ttf" />
+	  <None Remove="Resources\Fonts\RubikDistressed-Regular.ttf" />
+	  <None Remove="Resources\Fonts\Ubuntu-Regular.ttf" />
 	</ItemGroup>
 
 	<ItemGroup>
