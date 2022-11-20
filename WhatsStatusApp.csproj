@@ -56,4 +56,9 @@
 	  <None Remove="Resources\Fonts\materialdesignicons.ttf" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Views\" />
+	  <Folder Include="ViewModels\" />
+	</ItemGroup>
+
 </Project>

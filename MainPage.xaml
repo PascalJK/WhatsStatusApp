@@ -2,41 +2,52 @@
 <ContentPage
     x:Class="WhatsStatusApp.MainPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:fonts="clr-namespace:WhatsStatusApp.Resources.Fonts"
+    Shell.NavBarIsVisible="False">
 
-    <ScrollView>
-        <VerticalStackLayout
-            Padding="30,0"
-            Spacing="25"
+    <ContentPage.Resources>
+        <Style x:Key="FontLabelStyle" TargetType="Label">
+            <Setter Property="FontFamily" Value="MDI" />
+            <Setter Property="FontSize" Value="35" />
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid
+        BackgroundColor="HotPink"
+        ColumnDefinitions="*, auto"
+        RowDefinitions="auto, *, auto">
+        <HorizontalStackLayout
+            Grid.Column="1"
+            Padding="0,5,5,0"
+            Spacing="15">
+            <Label Style="{StaticResource FontLabelStyle}" Text="{x:Static fonts:MaterialDesignIcons.CapsLock}" />
+            <Label Style="{StaticResource FontLabelStyle}" Text="{x:Static fonts:MaterialDesignIcons.FormatText}" />
+            <Label Style="{StaticResource FontLabelStyle}" Text="{x:Static fonts:MaterialDesignIcons.Palette}" />
+        </HorizontalStackLayout>
+
+        <ScrollView
+            Grid.Row="1"
+            Grid.ColumnSpan="2"
+            Padding="10,20"
             VerticalOptions="Center">
-
-            <Image
-                HeightRequest="200"
-                HorizontalOptions="Center"
-                SemanticProperties.Description="Cute dot net bot waving hi to you!"
-                Source="dotnet_bot.png" />
-
-            <Label
+            <Editor
+                AutoSize="TextChanges"
                 FontSize="32"
-                HorizontalOptions="Center"
-                SemanticProperties.HeadingLevel="Level1"
-                Text="Hello, World!" />
+                HorizontalTextAlignment="Center"
+                Placeholder="Type a status"
+                SemanticProperties.Hint="Type a status"
+                VerticalTextAlignment="Center" />
+        </ScrollView>
 
-            <Label
-                FontSize="18"
-                HorizontalOptions="Center"
-                SemanticProperties.Description="Welcome to dot net Multi platform App U I"
-                SemanticProperties.HeadingLevel="Level2"
-                Text="Welcome to .NET Multi-platform App UI" />
-
-            <Button
-                x:Name="CounterBtn"
-                Clicked="OnCounterClicked"
-                HorizontalOptions="Center"
-                SemanticProperties.Hint="Counts the number of times you click"
-                Text="Click me" />
-
-        </VerticalStackLayout>
-    </ScrollView>
+        <Label
+            Grid.Row="2"
+            Grid.Column="1"
+            Padding="0,0,10,5"
+            HorizontalOptions="End"
+            SemanticProperties.Hint="Save status typed Button"
+            Style="{StaticResource FontLabelStyle}"
+            Text="{x:Static fonts:MaterialDesignIcons.Send}" />
+    </Grid>
 
 </ContentPage>
