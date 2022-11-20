@@ -1,4 +1,4 @@
-﻿namespace WhatsStatusApp;
+﻿namespace WhatsStatusApp.Views;
 
 public partial class MainPage : ContentPage
 {
