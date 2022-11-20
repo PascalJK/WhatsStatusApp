@@ -4,6 +4,8 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:fonts="clr-namespace:WhatsStatusApp.Resources.Fonts"
+    xmlns:viewmodel="clr-namespace:WhatsStatusApp.ViewModels"
+    x:DataType="viewmodel:MainPageViewModel"
     Shell.NavBarIsVisible="False">
 
     <ContentPage.Resources>
@@ -14,7 +16,7 @@
     </ContentPage.Resources>
 
     <Grid
-        BackgroundColor="HotPink"
+        BackgroundColor="{Binding StatusBackgroundColor}"
         ColumnDefinitions="*, auto"
         RowDefinitions="auto, *, auto">
         <HorizontalStackLayout
@@ -23,7 +25,11 @@
             Spacing="15">
             <Label Style="{StaticResource FontLabelStyle}" Text="{x:Static fonts:MaterialDesignIcons.CapsLock}" />
             <Label Style="{StaticResource FontLabelStyle}" Text="{x:Static fonts:MaterialDesignIcons.FormatText}" />
-            <Label Style="{StaticResource FontLabelStyle}" Text="{x:Static fonts:MaterialDesignIcons.Palette}" />
+            <Label Style="{StaticResource FontLabelStyle}" Text="{x:Static fonts:MaterialDesignIcons.Palette}">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ChangeStatusBackgroundColorCommand}" />
+                </Label.GestureRecognizers>
+            </Label>
         </HorizontalStackLayout>
 
         <ScrollView
@@ -32,6 +38,7 @@
             Padding="10,20"
             VerticalOptions="Center">
             <Editor
+                x:Name="editor"
                 AutoSize="TextChanges"
                 FontSize="32"
                 HorizontalTextAlignment="Center"
