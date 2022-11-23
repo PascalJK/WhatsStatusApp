@@ -4,6 +4,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:fonts="clr-namespace:WhatsStatusApp.Resources.Fonts"
+    xmlns:model="clr-namespace:WhatsStatusApp.Models"
     xmlns:viewmodel="clr-namespace:WhatsStatusApp.ViewModels"
     x:DataType="viewmodel:MainPageViewModel"
     Shell.NavBarIsVisible="False">
@@ -14,6 +15,42 @@
             <Setter Property="FontSize" Value="35" />
             <Setter Property="VerticalTextAlignment" Value="Center" />
         </Style>
+
+        <DataTemplate x:Key="LinkDataTemplate" x:DataType="model:Link">
+            <Frame
+                Margin="5,0"
+                Padding="5"
+                BackgroundColor="Gray"
+                BorderColor="Transparent">
+                <Grid
+                    ColumnDefinitions="65,*"
+                    ColumnSpacing="5"
+                    RowDefinitions="20,45">
+                    <Frame
+                        Grid.RowSpan="2"
+                        Padding="5"
+                        IsClippedToBounds="True">
+                        <Image Aspect="AspectFit">
+                            <Image.Source>
+                                <UriImageSource CachingEnabled="True" Uri="{Binding Image}" />
+                            </Image.Source>
+                        </Image>
+                    </Frame>
+                    <Label
+                        Grid.Column="1"
+                        FontAttributes="Bold"
+                        LineBreakMode="TailTruncation"
+                        Text="{Binding Title}"
+                        TextColor="White" />
+                    <Label
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        FontSize="Small"
+                        MaxLines="3"
+                        Text="{Binding Description}" />
+                </Grid>
+            </Frame>
+        </DataTemplate>
     </ContentPage.Resources>
 
     <Grid
@@ -23,6 +60,7 @@
         <HorizontalStackLayout
             Grid.Column="1"
             Padding="0,10,10,5"
+            HorizontalOptions="End"
             Spacing="15">
             <Label
                 FontSize="30"
@@ -67,14 +105,61 @@
                 VerticalTextAlignment="Center" />
         </ScrollView>
 
-        <Label
+        <Border
+            Grid.Row="1"
+            Grid.RowSpan="2"
+            Grid.ColumnSpan="2"
+            Padding="5,10,5,5"
+            BackgroundColor="Black"
+            IsVisible="false"
+            VerticalOptions="End">
+            <CollectionView ItemTemplate="{StaticResource LinkDataTemplate}" ItemsSource="{Binding LinksCollection}">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout ItemSpacing="5" Orientation="Vertical" />
+                </CollectionView.ItemsLayout>
+            </CollectionView>
+        </Border>
+
+        <HorizontalStackLayout
             Grid.Row="2"
             Grid.Column="1"
-            Padding="0,0,10,5"
+            Margin="0,0,10,5"
             HorizontalOptions="End"
-            SemanticProperties.Hint="Save status typed Button"
-            Style="{StaticResource FontLabelStyle}"
-            Text="{x:Static fonts:MaterialDesignIcons.Send}" />
+            Spacing="10">
+            <Border
+                Padding="10,5"
+                BackgroundColor="Crimson"
+                SemanticProperties.Hint="Save status typed Button"
+                Stroke="White"
+                StrokeShape="RoundRectangle 20,0"
+                VerticalOptions="End">
+                <Label FontSize="20">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Links:" />
+                            <Span Text="{Binding LinksCount}" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding GetLinksCommand}" />
+                </Border.GestureRecognizers>
+            </Border>
+
+            <Border
+                Padding="5"
+                BackgroundColor="Crimson"
+                HeightRequest="50"
+                SemanticProperties.Hint="Save status typed Button"
+                Stroke="White"
+                StrokeShape="RoundRectangle 40"
+                WidthRequest="50">
+                <Label
+                    HorizontalOptions="Center"
+                    Style="{StaticResource FontLabelStyle}"
+                    Text="{x:Static fonts:MaterialDesignIcons.ContentSave}" />
+            </Border>
+        </HorizontalStackLayout>
     </Grid>
 
 </ContentPage>
