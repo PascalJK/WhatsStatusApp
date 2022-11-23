@@ -1,14 +1,22 @@
-﻿namespace WhatsStatusApp.ViewModels;
+﻿using System.Collections.ObjectModel;
+using System.Text.RegularExpressions;
+
+namespace WhatsStatusApp.ViewModels;
 internal partial class MainPageViewModel : BaseViewModel
 {
     public int StatusTextLimit { get; } = 999;
     readonly List<Color> backgroudColors = LoadStatusBackgroundColors();
     readonly List<string> fonts = LoadStatusFonts();
-    readonly Random random = new();
+    readonly Regex linkParser;
     string _StatusText = string.Empty;
+
+    readonly Random random = new();
+    public List<Link> Links { get; set; } = new();
+    public ObservableCollection<Link> LinksCollection { get; set; } = new();
 
     [ObservableProperty] string _StatusTextFamily, _StatusFont;
     [ObservableProperty] Color _StatusBackgroundColor;
+    [ObservableProperty] int _LinksCount;
     [ObservableProperty] TextTransform _StatusTextTransform = TextTransform.None;
 
     public string StatusText
@@ -18,16 +26,20 @@ internal partial class MainPageViewModel : BaseViewModel
         {
             SetProperty(ref _StatusText, value);
             CheckStatusTextLength();
+            GetLinksCount();
         }
     }
 
     public ICommand ChangeStatusTextTransformCommand => new Command(SetStatusTextTransform);
     public ICommand ChangeStatusFontCommand => new Command(SetRandomStatusFont);
     public ICommand ChangeStatusBackgroundColorCommand => new Command(SetRandomStatusBackgroundColor);
+    public ICommand GetLinksCommand => new Command(CreateLinksPreview);
+    public ICommand SaveStatusCommand => new Command(SaveStatusAsync);
 
     public MainPageViewModel()
     {
         ClosePageCommand = new Command(async () => await OnBackButtonPressed());
+        linkParser = new(@"\b(?:https?://|www\.)\S+\b", RegexOptions.Compiled | RegexOptions.IgnorePatternWhitespace | RegexOptions.IgnoreCase);
         SetRandomStatusFont();
         SetRandomStatusBackgroundColor();
     }
@@ -104,4 +116,42 @@ internal partial class MainPageViewModel : BaseViewModel
 
     void SetRandomStatusBackgroundColor()
         => StatusBackgroundColor = backgroudColors[random.Next(backgroudColors.Count)];
+
+    void GetLinksCount() 
+        => LinksCount = linkParser.Matches(StatusText).Count;
+
+    async void CreateLinksPreview()
+    {
+        LinksCollection.Clear();
+        var links = linkParser.Matches(StatusText);
+
+        foreach (var item in links)
+        {
+            string url = item.ToString();
+            var link = Links.FirstOrDefault(element => element.URL == url);
+            link ??= await GetLinkData(url);
+            if (link != null)
+                LinksCollection.Add(link);
+        }
+        Links = LinksCollection.ToList();
+    }
+
+    private static async Task<Link> GetLinkData(string url)
+    {
+        try
+        { 
+            var graph = await OpenGraph.ParseUrlAsync(url);
+            return new Link().DecodeMetaInformation(graph);
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return null;
+        }
+    }
+
+    private static async Task SaveStatusAsync()
+    {
+
+    }
 }
