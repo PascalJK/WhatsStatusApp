@@ -4,21 +4,28 @@ using System.Text.RegularExpressions;
 namespace WhatsStatusApp.ViewModels;
 internal partial class MainPageViewModel : BaseViewModel
 {
+    #region readonly Fields
     public int StatusTextLimit { get; } = 999;
     readonly List<Color> backgroudColors = LoadStatusBackgroundColors();
     readonly List<string> fonts = LoadStatusFonts();
     readonly Regex linkParser;
-    string _StatusText = string.Empty;
-
     readonly Random random = new();
+    #endregion
+
+    #region Props
     public List<Link> Links { get; set; } = new();
     public ObservableCollection<Link> LinksCollection { get; set; } = new();
+    #endregion
 
+    #region ObservableProperties
     [ObservableProperty] string _StatusTextFamily, _StatusFont;
     [ObservableProperty] Color _StatusBackgroundColor;
     [ObservableProperty] int _LinksCount;
     [ObservableProperty] TextTransform _StatusTextTransform = TextTransform.None;
+    #endregion
 
+    #region Full Props
+    string _StatusText = string.Empty;
     public string StatusText
     {
         get => _StatusText;
@@ -29,17 +36,20 @@ internal partial class MainPageViewModel : BaseViewModel
             GetLinksCount();
         }
     }
+    #endregion
 
+    #region ICommands
     public ICommand ChangeStatusTextTransformCommand => new Command(SetStatusTextTransform);
     public ICommand ChangeStatusFontCommand => new Command(SetRandomStatusFont);
     public ICommand ChangeStatusBackgroundColorCommand => new Command(SetRandomStatusBackgroundColor);
     public ICommand GetLinksCommand => new Command(CreateLinksPreview);
-    public ICommand SaveStatusCommand => new Command(SaveStatusAsync);
+    public ICommand SaveStatusCommand => new Command(async () => await SaveStatusAsync()); 
+    #endregion
 
     public MainPageViewModel()
     {
         ClosePageCommand = new Command(async () => await OnBackButtonPressed());
-        linkParser = new(@"\b(?:https?://|www\.)\S+\b", RegexOptions.Compiled | RegexOptions.IgnorePatternWhitespace | RegexOptions.IgnoreCase);
+        linkParser = RegexLinkParser();
         SetRandomStatusFont();
         SetRandomStatusBackgroundColor();
     }
@@ -150,8 +160,18 @@ internal partial class MainPageViewModel : BaseViewModel
         }
     }
 
-    private static async Task SaveStatusAsync()
+    private async Task SaveStatusAsync()
     {
+        await RunTryCatchAsync(async () =>
+        {
+            if (string.IsNullOrWhiteSpace(StatusText))
+                throw new Exception("cannot save blank text");
 
+            await LocalDatabaseService.LocalDB.AddNewStatusAsync(new Status().CreateNewStatusModel(this));
+        });
     }
+
+
+    [GeneratedRegex("\\b(?:https?://|www\\.)\\S+\\b", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.IgnorePatternWhitespace, "en-NA")]
+    private static partial Regex RegexLinkParser();
 }

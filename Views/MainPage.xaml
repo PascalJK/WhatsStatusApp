@@ -158,6 +158,9 @@
                     HorizontalOptions="Center"
                     Style="{StaticResource FontLabelStyle}"
                     Text="{x:Static fonts:MaterialDesignIcons.ContentSave}" />
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding SaveStatusCommand}" />
+                </Border.GestureRecognizers>
             </Border>
         </HorizontalStackLayout>
     </Grid>
