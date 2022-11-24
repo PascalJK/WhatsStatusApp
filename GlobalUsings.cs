@@ -7,3 +7,4 @@ global using CommunityToolkit.Mvvm;
 global using CommunityToolkit.Mvvm.ComponentModel;
 global using System.Windows.Input;
 global using OpenGraphNet;
+global using CSharpVitamins;

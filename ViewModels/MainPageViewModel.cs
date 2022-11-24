@@ -18,7 +18,7 @@ internal partial class MainPageViewModel : BaseViewModel
     #endregion
 
     #region ObservableProperties
-    [ObservableProperty] string _StatusTextFamily, _StatusFont;
+    [ObservableProperty] string _StatusFont;
     [ObservableProperty] Color _StatusBackgroundColor;
     [ObservableProperty] int _LinksCount;
     [ObservableProperty] TextTransform _StatusTextTransform = TextTransform.None;
