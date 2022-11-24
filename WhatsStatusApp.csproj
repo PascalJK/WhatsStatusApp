@@ -66,11 +66,27 @@
 	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
 	  <PackageReference Include="CSharpVitamins.ShortGuid" Version="2.0.0" />
 	  <PackageReference Include="OpenGraph-Net" Version="4.0.1" />
+	  <PackageReference Include="SkiaSharp.Extended.UI.Maui" Version="2.0.0-preview.61" />
 	  <PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <Folder Include="Resources\Templates\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Views\ContentViews\StatusEditorView.xaml.cs">
+	    <DependentUpon>StatusEditorView.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="Views\ContentViews\MainView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\ContentViews\StatusEditorView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 
 </Project>
