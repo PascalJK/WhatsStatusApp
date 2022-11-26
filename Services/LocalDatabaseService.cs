@@ -1,6 +1,4 @@
-﻿using SQLite;
-
-namespace WhatsStatusApp.Services;
+﻿namespace WhatsStatusApp.Services;
 internal class LocalDatabaseService : ILocalDatabase
 {
     #region Instance
@@ -9,10 +7,11 @@ internal class LocalDatabaseService : ILocalDatabase
     #endregion
 
     private SQLiteAsyncConnection database;
+
     private async Task InitializeDatabase()
     {
-        if (database != null) return;
-        var databasePath = Path.Combine(FileSystem.AppDataDirectory, "whatsStatus.db");
+        if (database is not null) return;
+        var databasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "whatsStatus.db3");
         database = new SQLiteAsyncConnection(databasePath);
         await database.CreateTableAsync<Status>();
     }
@@ -30,7 +29,7 @@ internal class LocalDatabaseService : ILocalDatabase
 
     public Task FindStatusAsync(Status status) => throw new NotImplementedException();
 
-    public async Task<List<Status>> GetAllStatusesAsync()
+    public async Task<List<Status>> GetStatusListAsync()
     {
         await InitializeDatabase();
         return await database.Table<Status>().ToListAsync();
