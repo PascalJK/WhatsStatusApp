@@ -11,8 +11,8 @@
     Shell.NavBarIsVisible="False">
 
     <Grid>
-        <views:StatusEditorView />
-        <views:MainView BackgroundColor="Black" />
+        <views:MainView />
+        <views:StatusEditorView IsVisible="{Binding ShowStatusEditor}" />
     </Grid>
 
 </ContentPage>

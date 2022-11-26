@@ -3,6 +3,7 @@
 public partial class MainPage : ContentPage
 {
 	readonly MainPageViewModel vm = new();
+
 	public MainPage()
 	{
 		InitializeComponent();
@@ -11,14 +12,14 @@ public partial class MainPage : ContentPage
 
 	protected override bool OnBackButtonPressed()
 	{
-		Shell.Current.Dispatcher.Dispatch(async () =>
+		if (vm.ShowStatusEditor)
 		{
-			var ans = await vm.OnBackButtonPressed();
-			if (ans)
-				Application.Current.Quit();
-			// Todo Confrim Quit b4 Quit.
-		});
-		return true;
+			Shell.Current.Dispatcher.Dispatch(async () 
+				=> await vm.OnBackButtonPressed());
+			return true;
+		}
+		else
+			return false;
 	}
 }
 
