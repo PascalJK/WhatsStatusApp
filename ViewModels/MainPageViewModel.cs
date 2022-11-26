@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using CommunityToolkit.Mvvm.Input;
+using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 
 namespace WhatsStatusApp.ViewModels;
@@ -21,6 +22,8 @@ internal partial class MainPageViewModel : BaseViewModel
     [ObservableProperty] string _StatusFont;
     [ObservableProperty] Color _StatusBackgroundColor;
     [ObservableProperty] int _LinksCount;
+    [ObservableProperty] bool _ShowStatusEditor, _IsStatusListEmpty;
+    [ObservableProperty] ObservableCollection<Status> _StatusCollection = new();
     [ObservableProperty] TextTransform _StatusTextTransform = TextTransform.None;
     #endregion
 
@@ -38,34 +41,29 @@ internal partial class MainPageViewModel : BaseViewModel
     }
     #endregion
 
-    #region ICommands
-    public ICommand ChangeStatusTextTransformCommand => new Command(SetStatusTextTransform);
-    public ICommand ChangeStatusFontCommand => new Command(SetRandomStatusFont);
-    public ICommand ChangeStatusBackgroundColorCommand => new Command(SetRandomStatusBackgroundColor);
-    public ICommand GetLinksCommand => new Command(CreateLinksPreview);
-    public ICommand SaveStatusCommand => new Command(async () => await SaveStatusAsync()); 
-    #endregion
-
     public MainPageViewModel()
     {
-        ClosePageCommand = new Command(async () => await OnBackButtonPressed());
+        Shell.Current.Dispatcher.Dispatch(async () =>
+        {
+            await GetSavedStatusListAsync();
+        });
         linkParser = RegexLinkParser();
-        SetRandomStatusFont();
-        SetRandomStatusBackgroundColor();
     }
 
     /// <summary>
     /// 
     /// </summary>
     /// <returns></returns>
-    public async Task<bool> OnBackButtonPressed()
+    [RelayCommand]
+    public async Task OnBackButtonPressed()
     {
         if (!string.IsNullOrWhiteSpace(StatusText))
         {
             var ans = await Shell.Current.DisplayAlert("", "Discard text?", "Discard", "Cancel");
-            return ans;
+            if (!ans)
+                return;
         }
-        return true;
+        DismissStatusEditor();
     }
 
     void CheckStatusTextLength()
@@ -74,6 +72,48 @@ internal partial class MainPageViewModel : BaseViewModel
             Shell.Current.DisplayAlert("Input Limit", $"Your status cannot exceed {StatusTextLimit} characters.", "OK").Wait(300);
     }
 
+    #region StatusEditor
+    void DismissStatusEditor()
+    {
+        StatusText = string.Empty;
+        ShowStatusEditor = false;
+    }
+
+    [RelayCommand]
+    void LoadStatusEditor()
+    {
+        SetRandomStatusFont();
+        SetRandomStatusBackgroundColor();
+        ShowStatusEditor = true;
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <exception cref="Exception"></exception>
+    [RelayCommand]
+    void SetStatusTextTransform()
+    {
+        StatusTextTransform = StatusTextTransform switch
+        {
+            TextTransform.None => TextTransform.Lowercase,
+            TextTransform.Default => TextTransform.Lowercase,
+            TextTransform.Lowercase => TextTransform.Uppercase,
+            TextTransform.Uppercase => TextTransform.Default,
+            _ => throw new Exception("TextTronsform threw an unexpected exception"),
+        };
+        Console.WriteLine(StatusText);
+    }
+
+    [RelayCommand]
+    void SetRandomStatusFont()
+        => StatusFont = fonts[random.Next(fonts.Count)];
+
+    [RelayCommand]
+    void SetRandomStatusBackgroundColor()
+        => StatusBackgroundColor = backgroudColors[random.Next(backgroudColors.Count)];
+
+    #region Static Status Properties
     static List<Color> LoadStatusBackgroundColors()
     {
         return new List<Color>()
@@ -102,35 +142,16 @@ internal partial class MainPageViewModel : BaseViewModel
             "RubikDistressedRegular",
             "UbuntuRegular",
         };
-    }
+    } 
+    #endregion
+    #endregion
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <exception cref="Exception"></exception>
-    void SetStatusTextTransform()
-    {
-        StatusTextTransform = StatusTextTransform switch
-        {
-            TextTransform.None => TextTransform.Lowercase,
-            TextTransform.Default => TextTransform.Lowercase,
-            TextTransform.Lowercase => TextTransform.Uppercase,
-            TextTransform.Uppercase => TextTransform.Default,
-            _ => throw new Exception("TextTronsform threw an unexpected exception"),
-        };
-        Console.WriteLine(StatusText);
-    }
-
-    void SetRandomStatusFont()
-        => StatusFont = fonts[random.Next(fonts.Count)];
-
-    void SetRandomStatusBackgroundColor()
-        => StatusBackgroundColor = backgroudColors[random.Next(backgroudColors.Count)];
-
+    #region Status Link
     void GetLinksCount() 
         => LinksCount = linkParser.Matches(StatusText).Count;
 
-    async void CreateLinksPreview()
+    [RelayCommand]
+    async Task PreviewLinksAsync()
     {
         LinksCollection.Clear();
         var links = linkParser.Matches(StatusText);
@@ -149,18 +170,20 @@ internal partial class MainPageViewModel : BaseViewModel
     private static async Task<Link> GetLinkData(string url)
     {
         try
-        { 
+        {
             var graph = await OpenGraph.ParseUrlAsync(url);
             return new Link().DecodeMetaInformation(graph);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
             return null;
         }
-    }
+    } 
+    #endregion
 
-    private async Task SaveStatusAsync()
+    [RelayCommand]
+    async Task SaveStatusAsync()
     {
         await RunTryCatchAsync(async () =>
         {
@@ -168,7 +191,21 @@ internal partial class MainPageViewModel : BaseViewModel
                 throw new Exception("cannot save blank text");
 
             await LocalDatabaseService.LocalDB.AddNewStatusAsync(new Status().CreateNewStatusModel(this));
+            await GetSavedStatusListAsync();
+            DismissStatusEditor();
         });
+    }
+    [RelayCommand]
+    async Task GetSavedStatusListAsync()
+    {
+        StatusCollection.Clear();
+        var list = await LocalDatabaseService.LocalDB.GetStatusListAsync();
+        IsStatusListEmpty = list.Count <= 0;
+        foreach (var s in list)
+        {
+            s.SetStatusBackGroundColor();
+            StatusCollection.Add(s);
+        }
     }
 
 
