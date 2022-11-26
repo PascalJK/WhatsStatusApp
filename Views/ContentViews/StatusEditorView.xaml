@@ -5,10 +5,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:fonts="clr-namespace:WhatsStatusApp.Resources.Fonts"
     xmlns:model="clr-namespace:WhatsStatusApp.Models"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:viewmodel="clr-namespace:WhatsStatusApp.ViewModels"
     x:DataType="viewmodel:MainPageViewModel">
 
     <ContentView.Resources>
+        <toolkit:IntToBoolConverter x:Key="IntToBoolConverter" />
+        <toolkit:IsStringNotNullOrWhiteSpaceConverter x:Key="IsStringNotNullOrWhiteSpaceConverter" />
+
         <Style x:Key="FontLabelStyle" TargetType="Label">
             <Setter Property="FontFamily" Value="MDI" />
             <Setter Property="FontSize" Value="35" />
@@ -67,17 +71,17 @@
                 Text="Abc"
                 TextTransform="{Binding StatusTextTransform}">
                 <Label.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding ChangeStatusTextTransformCommand}" />
+                    <TapGestureRecognizer Command="{Binding SetStatusTextTransformCommand}" />
                 </Label.GestureRecognizers>
             </Label>
             <Label Style="{StaticResource FontLabelStyle}" Text="{x:Static fonts:MaterialDesignIcons.FormatText}">
                 <Label.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding ChangeStatusFontCommand}" />
+                    <TapGestureRecognizer Command="{Binding SetRandomStatusFontCommand}" />
                 </Label.GestureRecognizers>
             </Label>
             <Label Style="{StaticResource FontLabelStyle}" Text="{x:Static fonts:MaterialDesignIcons.Palette}">
                 <Label.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding ChangeStatusBackgroundColorCommand}" />
+                    <TapGestureRecognizer Command="{Binding SetRandomStatusBackgroundColorCommand}" />
                 </Label.GestureRecognizers>
             </Label>
         </HorizontalStackLayout>
@@ -127,7 +131,8 @@
             Spacing="10">
             <Border
                 Padding="10,5"
-                BackgroundColor="Crimson"
+                BackgroundColor="#228C22"
+                IsVisible="{Binding LinksCount, Converter={StaticResource IntToBoolConverter}}"
                 SemanticProperties.Hint="Save status typed Button"
                 Stroke="White"
                 StrokeShape="RoundRectangle 20,0"
@@ -141,14 +146,15 @@
                     </Label.FormattedText>
                 </Label>
                 <Border.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding GetLinksCommand}" />
+                    <TapGestureRecognizer Command="{Binding PreviewLinksCommand}" />
                 </Border.GestureRecognizers>
             </Border>
 
             <Border
                 Padding="5"
-                BackgroundColor="Crimson"
+                BackgroundColor="#228C22"
                 HeightRequest="50"
+                IsVisible="{Binding StatusText, Converter={StaticResource IsStringNotNullOrWhiteSpaceConverter}}"
                 SemanticProperties.Hint="Save status typed Button"
                 Stroke="White"
                 StrokeShape="RoundRectangle 40"
