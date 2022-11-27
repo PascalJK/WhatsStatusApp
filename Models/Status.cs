@@ -1,5 +1,5 @@
 ﻿namespace WhatsStatusApp.Models;
-internal class Status
+public class Status
 {
     [PrimaryKey]
     public string Id { get; set; }
