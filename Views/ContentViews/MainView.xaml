@@ -2,25 +2,146 @@
 <ContentView
     x:Class="WhatsStatusApp.Views.ContentViews.MainView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:fonts="clr-namespace:WhatsStatusApp.Resources.Fonts"
+    xmlns:model="clr-namespace:WhatsStatusApp.Models"
+    xmlns:skia="clr-namespace:SkiaSharp.Extended.UI.Controls;assembly=SkiaSharp.Extended.UI"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:viewmodel="clr-namespace:WhatsStatusApp.ViewModels"
+    x:DataType="viewmodel:MainPageViewModel">
+
+    <ContentView.Resources>
+        <toolkit:ColorToHexRgbStringConverter x:Key="ColorToHexRgbStringConverter" />
+        <toolkit:IsListNullOrEmptyConverter x:Key="IsListNullOrEmptyConverter" />
+        <toolkit:IsListNotNullOrEmptyConverter x:Key="IsListNotNullOrEmptyConverter" />
+
+        <Style x:Key="FontLabelStyle" TargetType="Label">
+            <Setter Property="FontFamily" Value="MDI" />
+            <Setter Property="FontSize" Value="45" />
+            <Setter Property="VerticalTextAlignment" Value="Center" />
+        </Style>
+
+        <DataTemplate x:Key="StatusDataTemplate" x:DataType="model:Status">
+            <Frame
+                Margin="5,0"
+                Padding="10"
+                BackgroundColor="{Binding Color}"
+                BorderColor="Transparent"
+                CornerRadius="10"
+                IsClippedToBounds="True">
+                <VerticalStackLayout>
+                    <Label
+                        FontFamily="{Binding Font}"
+                        FontSize="Subtitle"
+                        MaxLines="3"
+                        Text="{Binding Text}" />
+                    <Label
+                        FontSize="Small"
+                        HorizontalOptions="End"
+                        Text="{Binding DateCreated, StringFormat='{0:dd MMM yyyy | HH:mm}'}" />
+                </VerticalStackLayout>
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainPageViewModel}}, Path=LoadStatusDetailCommand}" CommandParameter="{Binding .}" />
+                </Frame.GestureRecognizers>
+            </Frame>
+        </DataTemplate>
+    </ContentView.Resources>
+
     <Grid
         BackgroundColor="Black"
         ColumnDefinitions="*, auto"
-        RowDefinitions="50, *">
-        <Border Grid.ColumnSpan="2" BackgroundColor="Green" />
+        RowDefinitions="auto, *"
+        RowSpacing="0">
+        <Border
+            Grid.ColumnSpan="2"
+            Padding="10,5"
+            BackgroundColor="#228C22"
+            StrokeThickness="0">
+            <Label
+                FontAttributes="Bold"
+                FontFamily="PlayfairDisplayRegular"
+                FontSize="{OnIdiom 35,
+                                   Desktop=30}"
+                Text="Whats Status" />
+        </Border>
 
-        <Label
-            Margin="10,0"
-            Text="Whats Status"
-            VerticalOptions="Center" />
-
-        <CollectionView Grid.Row="1" Grid.ColumnSpan="2">
-            <CollectionView.EmptyView>
-                <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
-                    <Label Text="Nothing to show." />
-                    <Label Text="Add Status" TextColor="DodgerBlue" />
-                </VerticalStackLayout>
-            </CollectionView.EmptyView>
+        <CollectionView
+            Grid.Row="1"
+            Grid.ColumnSpan="2"
+            ItemTemplate="{StaticResource StatusDataTemplate}"
+            ItemsSource="{Binding StatusCollection}">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout
+                    Orientation="Vertical"
+                    Span="1"
+                    VerticalItemSpacing="3" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.Footer>
+                <Frame
+                    BackgroundColor="Transparent"
+                    BorderColor="Transparent"
+                    HasShadow="False"
+                    HeightRequest="60" />
+            </CollectionView.Footer>
         </CollectionView>
+
+        <VerticalStackLayout
+            Grid.Row="1"
+            Grid.ColumnSpan="2"
+            HorizontalOptions="Center"
+            IsVisible="{Binding IsStatusListEmpty}">
+            <skia:SKLottieView
+                HeightRequest="350"
+                RepeatCount="-1"
+                Source="empty_list.json"
+                WidthRequest="350" />
+            <Label
+                FontAttributes="Bold"
+                FontSize="{OnIdiom 20,
+                                   Desktop=22}"
+                HorizontalOptions="Center"
+                HorizontalTextAlignment="Center"
+                Text="Nothing to show" />
+            <Label
+                Margin="30,0"
+                FontSize="{OnIdiom 18,
+                                   Desktop=20}"
+                HorizontalOptions="Center"
+                HorizontalTextAlignment="Center">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="You don't have any statuses saved, " />
+                        <Span
+                            Text="click here"
+                            TextColor="DodgerBlue"
+                            TextDecorations="Underline" />
+                        <Span Text=" to add your first :)" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+        </VerticalStackLayout>
+
+        <Border
+            Grid.Row="1"
+            Grid.Column="1"
+            Margin="0,0,15,10"
+            Padding="5"
+            BackgroundColor="#228C22"
+            HeightRequest="60"
+            HorizontalOptions="End"
+            SemanticProperties.Hint="Save status typed Button"
+            Stroke="White"
+            StrokeShape="RoundRectangle 50"
+            VerticalOptions="End"
+            WidthRequest="60">
+            <Label
+                HorizontalOptions="Center"
+                Style="{StaticResource FontLabelStyle}"
+                Text="{x:Static fonts:MaterialDesignIcons.Plus}">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding LoadStatusEditorCommand}" />
+                </Label.GestureRecognizers>
+            </Label>
+        </Border>
     </Grid>
 </ContentView>

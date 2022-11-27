@@ -2,12 +2,13 @@
 
 public partial class MainPage : ContentPage
 {
-	readonly MainPageViewModel vm = new();
+	readonly MainPageViewModel vm;
 
-	public MainPage()
+	public MainPage(MainPageViewModel viewModel)
 	{
 		InitializeComponent();
-		BindingContext = vm;
+		BindingContext = viewModel;
+		vm = viewModel;
 	}
 
 	protected override bool OnBackButtonPressed()

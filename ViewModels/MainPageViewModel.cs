@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 
 namespace WhatsStatusApp.ViewModels;
-internal partial class MainPageViewModel : BaseViewModel
+public partial class MainPageViewModel : BaseViewModel
 {
     #region readonly Fields
     public int StatusTextLimit { get; } = 999;
@@ -142,8 +142,16 @@ internal partial class MainPageViewModel : BaseViewModel
             "RubikDistressedRegular",
             "UbuntuRegular",
         };
-    } 
+    }
     #endregion
+    #endregion
+
+    #region Status Details
+    [RelayCommand]
+    static async Task LoadStatusDetailAsync(Status status)
+    {
+        await ShellGoToAsync(nameof(DetailsPage), new Dictionary<string, object> { { nameof(Status), status } });
+    } 
     #endregion
 
     #region Status Link

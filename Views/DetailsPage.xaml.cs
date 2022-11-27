@@ -2,8 +2,12 @@ namespace WhatsStatusApp.Views;
 
 public partial class DetailsPage : ContentPage
 {
-	public DetailsPage()
+	private readonly DetailsViewModel vm;
+
+	public DetailsPage(DetailsViewModel viewModel)
 	{
 		InitializeComponent();
+		BindingContext = viewModel;
+		vm = viewModel;
 	}
 }
