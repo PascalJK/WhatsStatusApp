@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.Mvvm.Input;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 
 namespace WhatsStatusApp.ViewModels;
@@ -54,8 +53,8 @@ public partial class MainPageViewModel : BaseViewModel
     /// 
     /// </summary>
     /// <returns></returns>
-    [RelayCommand]
-    public async Task OnBackButtonPressed()
+    
+    public override async Task OnBackButtonPressed()
     {
         if (!string.IsNullOrWhiteSpace(StatusText))
         {
