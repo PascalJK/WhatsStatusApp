@@ -15,7 +15,7 @@ public class Status
     public Status CreateNewStatusModel(MainPageViewModel vm)
     {
         Id = ShortGuid.NewGuid().ToString();
-        Text = vm.StatusText;
+        Text = vm.StatusText.Trim();
         ColorHex = vm.StatusBackgroundColor.ToArgbHex();
         TextTransform = vm.StatusTextTransform;
         TextTransform = vm.StatusTextTransform;
