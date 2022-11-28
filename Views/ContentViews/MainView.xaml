@@ -11,10 +11,6 @@
     x:DataType="viewmodel:MainPageViewModel">
 
     <ContentView.Resources>
-        <toolkit:ColorToHexRgbStringConverter x:Key="ColorToHexRgbStringConverter" />
-        <toolkit:IsListNullOrEmptyConverter x:Key="IsListNullOrEmptyConverter" />
-        <toolkit:IsListNotNullOrEmptyConverter x:Key="IsListNotNullOrEmptyConverter" />
-
         <Style x:Key="FontLabelStyle" TargetType="Label">
             <Setter Property="FontFamily" Value="MDI" />
             <Setter Property="FontSize" Value="45" />
@@ -26,7 +22,6 @@
                 Margin="5,0"
                 Padding="10"
                 BackgroundColor="{Binding Color}"
-                BorderColor="Transparent"
                 CornerRadius="10"
                 IsClippedToBounds="True">
                 <VerticalStackLayout>
@@ -55,7 +50,7 @@
         <Border
             Grid.ColumnSpan="2"
             Padding="10,5"
-            BackgroundColor="#228C22"
+            BackgroundColor="{StaticResource Primary}"
             StrokeThickness="0">
             <Label
                 FontAttributes="Bold"
@@ -126,7 +121,7 @@
             Grid.Column="1"
             Margin="0,0,15,10"
             Padding="5"
-            BackgroundColor="#228C22"
+            BackgroundColor="{StaticResource Primary}"
             HeightRequest="60"
             HorizontalOptions="End"
             SemanticProperties.Hint="Save status typed Button"

@@ -10,9 +10,6 @@
     x:DataType="viewmodel:MainPageViewModel">
 
     <ContentView.Resources>
-        <toolkit:IntToBoolConverter x:Key="IntToBoolConverter" />
-        <toolkit:IsStringNotNullOrWhiteSpaceConverter x:Key="IsStringNotNullOrWhiteSpaceConverter" />
-
         <Style x:Key="FontLabelStyle" TargetType="Label">
             <Setter Property="FontFamily" Value="MDI" />
             <Setter Property="FontSize" Value="35" />
@@ -93,17 +90,12 @@
             VerticalOptions="Center">
             <Editor
                 x:Name="editor"
-                AutoSize="TextChanges"
                 FontFamily="{Binding StatusFont}"
-                FontSize="35"
                 HorizontalTextAlignment="Center"
-                Keyboard="Chat"
                 MaxLength="{Binding StatusTextLimit}"
                 Placeholder="Type a status"
-                PlaceholderColor="LightGray"
                 SemanticProperties.Hint="Type a status"
                 Text="{Binding StatusText}"
-                TextColor="White"
                 TextTransform="{Binding StatusTextTransform}"
                 VerticalTextAlignment="Center" />
         </ScrollView>
