@@ -3,15 +3,13 @@
     x:Class="WhatsStatusApp.Views.MainPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:fonts="clr-namespace:WhatsStatusApp.Resources.Fonts"
-    xmlns:model="clr-namespace:WhatsStatusApp.Models"
     xmlns:viewmodel="clr-namespace:WhatsStatusApp.ViewModels"
     xmlns:views="clr-namespace:WhatsStatusApp.Views.ContentViews"
     x:DataType="viewmodel:MainPageViewModel"
     Shell.NavBarIsVisible="False">
 
     <Grid>
-        <views:MainView />
+        <views:MainView IsVisible="{Binding ShowStatusEditor, Converter={StaticResource InvertedBoolConverter}}" />
         <views:StatusEditorView IsVisible="{Binding ShowStatusEditor}" />
         <ContentView ControlTemplate="{StaticResource IsLoadingView}" IsVisible="{Binding IsBusy}" />
     </Grid>
