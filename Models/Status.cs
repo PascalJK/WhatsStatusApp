@@ -5,8 +5,8 @@ public class Status
     public string Id { get; set; }
     public string Text { get; set; }
     public string ColorHex { get; set; }
-    public TextTransform TextTransform { get; set; }
     public string Font { get; set; }
+    public double Size { get; set; } = 35.0;
     public DateTime DateCreated { get; set; }
 
     [Ignore]
@@ -17,8 +17,7 @@ public class Status
         Id = ShortGuid.NewGuid().ToString();
         Text = vm.StatusText.Trim();
         ColorHex = vm.StatusBackgroundColor.ToArgbHex();
-        TextTransform = vm.StatusTextTransform;
-        TextTransform = vm.StatusTextTransform;
+        Size = vm.StatusFontSize;
         Font = vm.StatusFont;
         DateCreated = DateTime.Now;
         return this;

@@ -4,7 +4,7 @@ namespace WhatsStatusApp.ViewModels;
 public partial class MainPageViewModel : BaseViewModel
 {
     #region readonly Fields
-    public int StatusTextLimit { get; } = 999;
+    readonly int textMaxLength = 700;
     readonly List<Color> backgroudColors = LoadStatusBackgroundColors();
     readonly List<string> fonts = LoadStatusFonts();
     readonly Random random = new();
@@ -12,10 +12,11 @@ public partial class MainPageViewModel : BaseViewModel
 
     #region ObservableProperties
     [ObservableProperty] string _StatusFont;
+    [ObservableProperty] int _StatusTextMaxLength = int.MaxValue;
+    [ObservableProperty] double _StatusFontSize = Preferences.Get("fontsize", 35.0);
     [ObservableProperty] Color _StatusBackgroundColor;
-    [ObservableProperty] bool _ShowStatusEditor, _IsStatusListEmpty;
+    [ObservableProperty] bool _ShowStatusEditor, _ShowStatusFontEditor, _IsStatusListEmpty, _IsTextLimited;
     [ObservableProperty] ObservableCollection<Status> _StatusCollection = new();
-    [ObservableProperty] TextTransform _StatusTextTransform = TextTransform.None;
     #endregion
 
     #region Full Props
@@ -65,8 +66,8 @@ public partial class MainPageViewModel : BaseViewModel
 
     void CheckStatusTextLength()
     {
-        if (StatusText.Length >= StatusTextLimit)
-            Shell.Current.DisplayAlert("Input Limit", $"Your status cannot exceed {StatusTextLimit} characters.", "OK").Wait(300);
+        if (IsTextLimited && StatusText.Length >= textMaxLength)
+            Shell.Current.DisplayAlert("Input Limit", $"Your status cannot exceed {textMaxLength} characters.", "OK").Wait(300);
     }
 
     #region StatusEditor
@@ -74,6 +75,9 @@ public partial class MainPageViewModel : BaseViewModel
     {
         StatusText = string.Empty;
         ShowStatusEditor = false;
+        ShowStatusFontEditor = false;
+        IsTextLimited = false;
+        StatusTextMaxLength = int.MaxValue;
     }
 
     [RelayCommand]
@@ -84,23 +88,9 @@ public partial class MainPageViewModel : BaseViewModel
         ShowStatusEditor = true;
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <exception cref="Exception"></exception>
     [RelayCommand]
-    void SetStatusTextTransform()
-    {
-        StatusTextTransform = StatusTextTransform switch
-        {
-            TextTransform.None => TextTransform.Lowercase,
-            TextTransform.Default => TextTransform.Lowercase,
-            TextTransform.Lowercase => TextTransform.Uppercase,
-            TextTransform.Uppercase => TextTransform.Default,
-            _ => throw new Exception("TextTronsform threw an unexpected exception"),
-        };
-        Console.WriteLine(StatusText);
-    }
+    void ShowStatusFontEditorView()
+        => ShowStatusFontEditor = !ShowStatusFontEditor;
 
     [RelayCommand]
     void SetRandomStatusFont()
@@ -109,6 +99,25 @@ public partial class MainPageViewModel : BaseViewModel
     [RelayCommand]
     void SetRandomStatusBackgroundColor()
         => StatusBackgroundColor = backgroudColors[random.Next(backgroudColors.Count)];
+
+    [RelayCommand]
+    async Task StatusTextLimit()
+    {
+        await RunTryCatchAsync(async () =>
+        {
+            if (!IsTextLimited)
+            {
+                if (StatusText.Length > textMaxLength)
+                    throw new Exception($"could not set limit since status text length({StatusText.Length}) is already over the set limit({textMaxLength})");
+                StatusTextMaxLength = textMaxLength;
+                IsTextLimited = true;
+                return;
+            }
+            StatusTextMaxLength = int.MaxValue;
+            IsTextLimited = false;
+            await Task.CompletedTask;
+        });
+    }
 
     #region Static Status Properties
     static List<Color> LoadStatusBackgroundColors()
@@ -160,6 +169,7 @@ public partial class MainPageViewModel : BaseViewModel
                 throw new Exception("cannot save blank text");
 
             await LocalDatabaseService.LocalDB.AddNewStatusAsync(new Status().CreateNewStatusModel(this));
+            Preferences.Set("fontsize", StatusFontSize);
             await GetSavedStatusListAsync();
             MakeToast("Status Added.");
             DismissStatusEditor();

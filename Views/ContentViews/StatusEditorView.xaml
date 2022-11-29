@@ -12,22 +12,19 @@
     <Grid
         BackgroundColor="{Binding StatusBackgroundColor}"
         ColumnDefinitions="*, auto"
-        RowDefinitions="auto, *, auto">
+        RowDefinitions="auto, auto, *, auto"
+        RowSpacing="0">
         <HorizontalStackLayout
             Grid.Column="1"
             Padding="0,10,10,5"
             HorizontalOptions="End"
             Spacing="15">
-            <Label
-                FontSize="30"
-                Style="{StaticResource FontLabelStyle}"
-                Text="Abc"
-                TextTransform="{Binding StatusTextTransform}">
+            <Label Style="{StaticResource FontLabelStyle}" Text="{x:Static fonts:MaterialDesignIcons.FormatSize}">
                 <Label.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding SetStatusTextTransformCommand}" />
+                    <TapGestureRecognizer Command="{Binding ShowStatusFontEditorViewCommand}" />
                 </Label.GestureRecognizers>
             </Label>
-            <Label Style="{StaticResource FontLabelStyle}" Text="{x:Static fonts:MaterialDesignIcons.FormatText}">
+            <Label Style="{StaticResource FontLabelStyle}" Text="{x:Static fonts:MaterialDesignIcons.FormatFont}">
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding SetRandomStatusFontCommand}" />
                 </Label.GestureRecognizers>
@@ -39,54 +36,76 @@
             </Label>
         </HorizontalStackLayout>
 
-        <ScrollView
+        <Label
+            Margin="10,5,0,0"
+            FontSize="50"
+            HorizontalOptions="Start"
+            Style="{StaticResource FontLabelStyle}"
+            Text="{x:Static fonts:MaterialDesignIcons.Close}">
+            <Label.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding ClosePageCommand}" />
+            </Label.GestureRecognizers>
+        </Label>
+
+        <VerticalStackLayout
             Grid.Row="1"
+            Grid.ColumnSpan="2"
+            Padding="10,5"
+            IsVisible="{Binding ShowStatusFontEditor}">
+            <Label FontSize="20" Text="Text Size" />
+            <Slider
+                HeightRequest="25"
+                Maximum="50"
+                Minimum="14"
+                ThumbColor="{StaticResource Primary}"
+                Value="{Binding StatusFontSize}" />
+        </VerticalStackLayout>
+
+        <ScrollView
+            Grid.Row="2"
             Grid.ColumnSpan="2"
             Padding="10,20"
             VerticalOptions="Center">
             <Editor
                 x:Name="editor"
                 FontFamily="{Binding StatusFont}"
+                FontSize="{Binding StatusFontSize}"
                 HorizontalTextAlignment="Center"
                 IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
-                MaxLength="{Binding StatusTextLimit}"
+                MaxLength="{Binding StatusTextMaxLength}"
                 Placeholder="Type a status"
                 SemanticProperties.Hint="Type a status"
                 Text="{Binding StatusText}"
-                TextTransform="{Binding StatusTextTransform}"
                 VerticalTextAlignment="Center" />
         </ScrollView>
 
-        <HorizontalStackLayout
-            Grid.Row="2"
-            Grid.Column="1"
-            Margin="0,0,10,5"
-            HorizontalOptions="End"
-            Spacing="10">
+        <Grid
+            Grid.Row="3"
+            Grid.ColumnSpan="2"
+            Margin="5,5,10,10"
+            ColumnDefinitions="*, auto">
             <Border
-                Padding="10,5"
-                BackgroundColor="#228C22"
-                IsVisible="{Binding LinksCount, Converter={StaticResource IntToBoolConverter}}"
-                SemanticProperties.Hint="Save status typed Button"
-                Stroke="White"
-                StrokeShape="RoundRectangle 20,0"
-                VerticalOptions="End">
-                <Label FontSize="20">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="Links:" />
-                            <Span Text="{Binding LinksCount}" />
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
+                Padding="0.5"
+                BackgroundColor="{StaticResource Primary}"
+                HorizontalOptions="Start"
+                Stroke="{StaticResource White}"
+                StrokeShape="RoundRectangle 5">
+                <HorizontalStackLayout>
+                    <CheckBox IsChecked="{Binding IsTextLimited}" IsEnabled="False" />
+                    <Label
+                        Margin="0,0,10,0"
+                        FontFamily="OpenSansSemibold"
+                        Text="set text limit (700)"
+                        VerticalOptions="Center" />
+                </HorizontalStackLayout>
                 <Border.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding PreviewLinksCommand}" />
+                    <TapGestureRecognizer Command="{Binding StatusTextLimitCommand}" />
                 </Border.GestureRecognizers>
             </Border>
-
             <Border
+                Grid.Column="1"
                 Padding="5"
-                BackgroundColor="#228C22"
+                BackgroundColor="{StaticResource Primary}"
                 HeightRequest="50"
                 IsVisible="{Binding StatusText, Converter={StaticResource IsStringNotNullOrWhiteSpaceConverter}}"
                 SemanticProperties.Hint="Save status typed Button"
@@ -101,6 +120,6 @@
                     <TapGestureRecognizer Command="{Binding SaveStatusCommand}" />
                 </Border.GestureRecognizers>
             </Border>
-        </HorizontalStackLayout>
+        </Grid>
     </Grid>
 </ContentView>
