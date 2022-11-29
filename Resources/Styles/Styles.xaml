@@ -2,6 +2,36 @@
 <?xaml-comp compile="true" ?>
 <ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
+    <ControlTemplate x:Key="IsLoadingView">
+        <Grid RowDefinitions="*">
+            <BoxView />
+            <Frame
+                Padding="20,15"
+                BackgroundColor="{StaticResource Gray950}"
+                BorderColor="{StaticResource Gray600}"
+                CornerRadius="10"
+                HorizontalOptions="Center"
+                VerticalOptions="Center">
+                <VerticalStackLayout>
+                    <ActivityIndicator IsRunning="True" />
+                    <Label
+                        FontAttributes="Bold"
+                        FontFamily="OpenSansSemibold"
+                        FontSize="Subtitle"
+                        HorizontalTextAlignment="Center"
+                        Text="Please Wait..." />
+                </VerticalStackLayout>
+            </Frame>
+        </Grid>
+    </ControlTemplate>
+
+    <Style x:Key="FontLabelStyle" TargetType="Label">
+        <Setter Property="FontFamily" Value="MDI" />
+        <Setter Property="TextColor" Value="WhiteSmoke" />
+        <Setter Property="FontSize" Value="35" />
+        <Setter Property="VerticalTextAlignment" Value="Center" />
+    </Style>
+
     <Style TargetType="ActivityIndicator">
         <Setter Property="Color" Value="{StaticResource Primary}" />
     </Style>
@@ -13,7 +43,7 @@
     </Style>
 
     <Style TargetType="BoxView">
-        <!--<Setter Property="Opacity" Value=".5" />-->
+        <Setter Property="Opacity" Value=".5" />
         <Setter Property="Color" Value="{StaticResource Black}" />
     </Style>
 

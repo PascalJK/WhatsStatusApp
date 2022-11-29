@@ -9,50 +9,6 @@
     xmlns:viewmodel="clr-namespace:WhatsStatusApp.ViewModels"
     x:DataType="viewmodel:MainPageViewModel">
 
-    <ContentView.Resources>
-        <Style x:Key="FontLabelStyle" TargetType="Label">
-            <Setter Property="FontFamily" Value="MDI" />
-            <Setter Property="FontSize" Value="35" />
-            <Setter Property="VerticalTextAlignment" Value="Center" />
-        </Style>
-
-        <DataTemplate x:Key="LinkDataTemplate" x:DataType="model:Link">
-            <Frame
-                Margin="5,0"
-                Padding="5"
-                BackgroundColor="Gray"
-                BorderColor="Transparent">
-                <Grid
-                    ColumnDefinitions="65,*"
-                    ColumnSpacing="5"
-                    RowDefinitions="20,45">
-                    <Frame
-                        Grid.RowSpan="2"
-                        Padding="5"
-                        IsClippedToBounds="True">
-                        <Image Aspect="AspectFit">
-                            <Image.Source>
-                                <UriImageSource CachingEnabled="True" Uri="{Binding Image}" />
-                            </Image.Source>
-                        </Image>
-                    </Frame>
-                    <Label
-                        Grid.Column="1"
-                        FontAttributes="Bold"
-                        LineBreakMode="TailTruncation"
-                        Text="{Binding Title}"
-                        TextColor="White" />
-                    <Label
-                        Grid.Row="1"
-                        Grid.Column="1"
-                        FontSize="Small"
-                        MaxLines="3"
-                        Text="{Binding Description}" />
-                </Grid>
-            </Frame>
-        </DataTemplate>
-    </ContentView.Resources>
-
     <Grid
         BackgroundColor="{Binding StatusBackgroundColor}"
         ColumnDefinitions="*, auto"
@@ -92,6 +48,7 @@
                 x:Name="editor"
                 FontFamily="{Binding StatusFont}"
                 HorizontalTextAlignment="Center"
+                IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
                 MaxLength="{Binding StatusTextLimit}"
                 Placeholder="Type a status"
                 SemanticProperties.Hint="Type a status"
@@ -99,21 +56,6 @@
                 TextTransform="{Binding StatusTextTransform}"
                 VerticalTextAlignment="Center" />
         </ScrollView>
-
-        <Border
-            Grid.Row="1"
-            Grid.RowSpan="2"
-            Grid.ColumnSpan="2"
-            Padding="5,10,5,5"
-            BackgroundColor="Black"
-            IsVisible="false"
-            VerticalOptions="End">
-            <CollectionView ItemTemplate="{StaticResource LinkDataTemplate}" ItemsSource="{Binding LinksCollection}">
-                <CollectionView.ItemsLayout>
-                    <LinearItemsLayout ItemSpacing="5" Orientation="Vertical" />
-                </CollectionView.ItemsLayout>
-            </CollectionView>
-        </Border>
 
         <HorizontalStackLayout
             Grid.Row="2"
