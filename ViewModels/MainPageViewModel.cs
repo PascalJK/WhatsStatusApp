@@ -153,11 +153,14 @@ public partial class MainPageViewModel : BaseViewModel
     #endregion
 
     #region Status Details
+    /// <summary>
+    /// Navigates user to the Status Details Page along with status param data.
+    /// </summary>
+    /// <param name="status"></param>
     [RelayCommand]
-    static async Task LoadStatusDetailAsync(Status status)
-    {
-        await ShellGoToAsync(nameof(DetailsPage), new Dictionary<string, object> { { nameof(Status), status } });
-    } 
+    async Task LoadStatusDetailAsync(Status status)
+        => await RunTryCatchAsync(async ()
+            => await ShellGoToAsync(nameof(DetailsPage), new Dictionary<string, object> { { nameof(Status), status } }));
     #endregion
 
     [RelayCommand]
