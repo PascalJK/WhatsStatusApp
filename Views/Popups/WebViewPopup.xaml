@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup
+    x:Class="WhatsStatusApp.Views.Popups.WebViewPopup"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:fonts="clr-namespace:WhatsStatusApp.Resources.Fonts"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:Name="popup"
+    CanBeDismissedByTappingOutsideOfPopup="False">
+
+    <Border BackgroundColor="{StaticResource Gray900}" Stroke="{StaticResource Gray600}">
+        <Border.Resources>
+            <Style BasedOn="{StaticResource FontLabelStyle}" TargetType="Label" />
+        </Border.Resources>
+        <Grid RowDefinitions="*, auto">
+            <WebView x:Name="webview" />
+
+            <HorizontalStackLayout
+                Grid.Row="1"
+                Padding="5,10"
+                HorizontalOptions="CenterAndExpand"
+                Spacing="35">
+                <Label Text="{x:Static fonts:MaterialDesignIcons.ArrowLeftThick}">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="WebViewGoBack_Tapped" />
+                    </Label.GestureRecognizers>
+                </Label>
+                <Label Text="{x:Static fonts:MaterialDesignIcons.Reload}">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="WebViewReload_Tapped" />
+                    </Label.GestureRecognizers>
+                </Label>
+                <Label Text="{x:Static fonts:MaterialDesignIcons.ExitToApp}">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="WebViewDismiss_Tapped" />
+                    </Label.GestureRecognizers>
+                </Label>
+                <Label Text="{x:Static fonts:MaterialDesignIcons.Web}">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="WebViewLaunchBrowser_Tapped" />
+                    </Label.GestureRecognizers>
+                </Label>
+                <Label Text="{x:Static fonts:MaterialDesignIcons.ArrowRightThick}">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="WebViewGoForward_Tapped" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </HorizontalStackLayout>
+        </Grid>
+    </Border>
+</toolkit:Popup>

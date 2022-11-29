@@ -76,10 +76,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Resources\Templates\" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <Compile Update="Views\ContentViews\StatusEditorView.xaml.cs">
 	    <DependentUpon>StatusEditorView.xaml</DependentUpon>
 	  </Compile>
@@ -95,6 +91,10 @@
 	  <MauiXaml Update="Views\DetailsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Resources\Templates\" />
 	</ItemGroup>
 
 </Project>
