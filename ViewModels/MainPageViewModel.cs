@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Text.RegularExpressions;
 
 namespace WhatsStatusApp.ViewModels;
 public partial class MainPageViewModel : BaseViewModel
@@ -8,19 +7,12 @@ public partial class MainPageViewModel : BaseViewModel
     public int StatusTextLimit { get; } = 999;
     readonly List<Color> backgroudColors = LoadStatusBackgroundColors();
     readonly List<string> fonts = LoadStatusFonts();
-    readonly Regex linkParser;
     readonly Random random = new();
-    #endregion
-
-    #region Props
-    public List<Link> Links { get; set; } = new();
-    public ObservableCollection<Link> LinksCollection { get; set; } = new();
     #endregion
 
     #region ObservableProperties
     [ObservableProperty] string _StatusFont;
     [ObservableProperty] Color _StatusBackgroundColor;
-    [ObservableProperty] int _LinksCount;
     [ObservableProperty] bool _ShowStatusEditor, _IsStatusListEmpty;
     [ObservableProperty] ObservableCollection<Status> _StatusCollection = new();
     [ObservableProperty] TextTransform _StatusTextTransform = TextTransform.None;
@@ -35,25 +27,31 @@ public partial class MainPageViewModel : BaseViewModel
         {
             SetProperty(ref _StatusText, value);
             CheckStatusTextLength();
-            GetLinksCount();
         }
     }
     #endregion
 
     public MainPageViewModel()
     {
-        Shell.Current.Dispatcher.Dispatch(async () =>
-        {
-            await GetSavedStatusListAsync();
-        });
-        linkParser = RegexLinkParser();
+        Shell.Current.Dispatcher.Dispatch(async () 
+            => await LoadStatusListDataAsync());
+
+        WeakReferenceMessenger.Default.Register<DetailsViewModel>(this, async (r, m) 
+            => await LoadStatusListDataAsync());
+    }
+
+    private async Task LoadStatusListDataAsync()
+    {
+        IsBusy = true;
+        await GetSavedStatusListAsync();
+        await Task.Delay(500);
+        IsBusy = false;
     }
 
     /// <summary>
     /// 
     /// </summary>
     /// <returns></returns>
-    
     public override async Task OnBackButtonPressed()
     {
         if (!string.IsNullOrWhiteSpace(StatusText))
@@ -153,42 +151,6 @@ public partial class MainPageViewModel : BaseViewModel
     } 
     #endregion
 
-    #region Status Link
-    void GetLinksCount() 
-        => LinksCount = linkParser.Matches(StatusText).Count;
-
-    [RelayCommand]
-    async Task PreviewLinksAsync()
-    {
-        LinksCollection.Clear();
-        var links = linkParser.Matches(StatusText);
-
-        foreach (var item in links)
-        {
-            string url = item.ToString();
-            var link = Links.FirstOrDefault(element => element.URL == url);
-            link ??= await GetLinkData(url);
-            if (link != null)
-                LinksCollection.Add(link);
-        }
-        Links = LinksCollection.ToList();
-    }
-
-    private static async Task<Link> GetLinkData(string url)
-    {
-        try
-        {
-            var graph = await OpenGraph.ParseUrlAsync(url);
-            return new Link().DecodeMetaInformation(graph);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-            return null;
-        }
-    } 
-    #endregion
-
     [RelayCommand]
     async Task SaveStatusAsync()
     {
@@ -199,6 +161,7 @@ public partial class MainPageViewModel : BaseViewModel
 
             await LocalDatabaseService.LocalDB.AddNewStatusAsync(new Status().CreateNewStatusModel(this));
             await GetSavedStatusListAsync();
+            MakeToast("Status Added.");
             DismissStatusEditor();
         });
     }
@@ -214,8 +177,4 @@ public partial class MainPageViewModel : BaseViewModel
             StatusCollection.Add(s);
         }
     }
-
-
-    [GeneratedRegex("\\b(?:https?://|www\\.)\\S+\\b", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.IgnorePatternWhitespace, "en-NA")]
-    private static partial Regex RegexLinkParser();
 }

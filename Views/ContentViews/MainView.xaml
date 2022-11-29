@@ -19,10 +19,10 @@
 
         <DataTemplate x:Key="StatusDataTemplate" x:DataType="model:Status">
             <Frame
-                Margin="5,0"
+                Margin="3,0"
                 Padding="10"
                 BackgroundColor="{Binding Color}"
-                CornerRadius="10"
+                CornerRadius="1"
                 IsClippedToBounds="True">
                 <VerticalStackLayout>
                     <Label
@@ -69,7 +69,7 @@
                 <GridItemsLayout
                     Orientation="Vertical"
                     Span="1"
-                    VerticalItemSpacing="3" />
+                    VerticalItemSpacing="2" />
             </CollectionView.ItemsLayout>
             <CollectionView.Footer>
                 <Frame
