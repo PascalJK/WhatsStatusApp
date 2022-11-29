@@ -16,7 +16,7 @@ public partial class MainPageViewModel : BaseViewModel
     [ObservableProperty] double _StatusFontSize = Preferences.Get("fontsize", 35.0);
     [ObservableProperty] Color _StatusBackgroundColor;
     [ObservableProperty] bool _ShowStatusEditor, _ShowStatusFontEditor, _IsStatusListEmpty, _IsTextLimited;
-    [ObservableProperty] ObservableCollection<Status> _StatusCollection = new();
+    [ObservableProperty] ObservableCollection<StatusGroup> _StatusGroupCollection = new();
     #endregion
 
     #region Full Props
@@ -181,13 +181,14 @@ public partial class MainPageViewModel : BaseViewModel
     [RelayCommand]
     async Task GetSavedStatusListAsync()
     {
-        StatusCollection.Clear();
+        StatusGroupCollection.Clear();
+
         var list = await LocalDatabaseService.LocalDB.GetStatusListAsync();
-        IsStatusListEmpty = list.Count <= 0;
-        foreach (var s in list)
+        var groups = list?.GroupBy(s => s.DateCreated.ToString("dd MM yy")).OrderByDescending(s => s.Key);
+        foreach ( var l2 in groups)
         {
-            s.SetStatusBackGroundColor();
-            StatusCollection.Add(s);
+            StatusGroupCollection.Add(new StatusGroup(l2.ToList()));
         }
+        IsStatusListEmpty = list.Count <= 0;
     }
 }

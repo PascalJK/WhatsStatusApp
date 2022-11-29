@@ -27,13 +27,13 @@
                 <VerticalStackLayout>
                     <Label
                         FontFamily="{Binding Font}"
-                        FontSize="Subtitle"
+                        FontSize="17"
                         MaxLines="3"
                         Text="{Binding Text}" />
                     <Label
-                        FontSize="Small"
+                        FontSize="10"
                         HorizontalOptions="End"
-                        Text="{Binding DateCreated, StringFormat='{0:dd MMM yyyy | HH:mm}'}" />
+                        Text="{Binding DateCreated, StringFormat='{0:HH:mm}'}" />
                 </VerticalStackLayout>
                 <Frame.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainPageViewModel}}, Path=LoadStatusDetailCommand}" CommandParameter="{Binding .}" />
@@ -63,8 +63,20 @@
         <CollectionView
             Grid.Row="1"
             Grid.ColumnSpan="2"
+            IsGrouped="True"
             ItemTemplate="{StaticResource StatusDataTemplate}"
-            ItemsSource="{Binding StatusCollection}">
+            ItemsSource="{Binding StatusGroupCollection}">
+            <CollectionView.GroupHeaderTemplate>
+                <DataTemplate x:DataType="model:StatusGroup">
+                    <Label
+                        Margin="0,3"
+                        FontAttributes="Bold"
+                        FontFamily="UbuntuRegular"
+                        FontSize="17"
+                        HorizontalTextAlignment="Center"
+                        Text="{Binding Date, StringFormat='{0:d MMMM yyyy}'}" />
+                </DataTemplate>
+            </CollectionView.GroupHeaderTemplate>
             <CollectionView.ItemsLayout>
                 <GridItemsLayout
                     Orientation="Vertical"

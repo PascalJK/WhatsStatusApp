@@ -26,3 +26,13 @@ public class Status
     public void SetStatusBackGroundColor()
         => Color = Color.FromArgb(ColorHex);
 }
+
+public class StatusGroup : List<Status>
+{
+    public DateTime Date { get; set; }
+    public StatusGroup(List<Status> statuses) : base(statuses)
+    {
+        statuses.ForEach(s => s.SetStatusBackGroundColor());
+        Date = statuses.First().DateCreated;
+    }
+}
