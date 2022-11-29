@@ -10,7 +10,9 @@
 
     <Border BackgroundColor="{StaticResource Gray900}" Stroke="{StaticResource Gray600}">
         <Border.Resources>
-            <Style BasedOn="{StaticResource FontLabelStyle}" TargetType="Label" />
+            <Style BasedOn="{StaticResource FontLabelStyle}" TargetType="Label">
+                <Setter Property="FontSize" Value="30" />
+            </Style>
         </Border.Resources>
         <Grid RowDefinitions="*, auto">
             <WebView x:Name="webview" />
@@ -30,7 +32,7 @@
                         <TapGestureRecognizer Tapped="WebViewReload_Tapped" />
                     </Label.GestureRecognizers>
                 </Label>
-                <Label Text="{x:Static fonts:MaterialDesignIcons.ExitToApp}">
+                <Label Text="{x:Static fonts:MaterialDesignIcons.ExitToApp}" TextColor="Red">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Tapped="WebViewDismiss_Tapped" />
                     </Label.GestureRecognizers>
