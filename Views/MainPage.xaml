@@ -13,6 +13,7 @@
     <Grid>
         <views:MainView />
         <views:StatusEditorView IsVisible="{Binding ShowStatusEditor}" />
+        <ContentView ControlTemplate="{StaticResource IsLoadingView}" IsVisible="{Binding IsBusy}" />
     </Grid>
 
 </ContentPage>
