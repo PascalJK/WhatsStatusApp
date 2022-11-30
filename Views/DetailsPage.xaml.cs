@@ -10,4 +10,15 @@ public partial class DetailsPage : ContentPage
 		BindingContext = viewModel;
 		vm = viewModel;
 	}
+
+    private void OptionsItem_Clicked(object sender, EventArgs e)
+    {
+		vm.LoadOptionsDrawerCommand.Execute(null);
+    }
+
+	protected override bool OnBackButtonPressed()
+	{
+		vm.ClosePageCommand.Execute(null);
+		return true;
+	}
 }

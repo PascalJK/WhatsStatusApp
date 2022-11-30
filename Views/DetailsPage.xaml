@@ -3,11 +3,203 @@
     x:Class="WhatsStatusApp.Views.DetailsPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    Title="Details">
-    <VerticalStackLayout>
-        <Label
-            HorizontalOptions="Center"
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" />
-    </VerticalStackLayout>
+    xmlns:fonts="clr-namespace:WhatsStatusApp.Resources.Fonts"
+    xmlns:model="clr-namespace:WhatsStatusApp.Models"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:viewmodel="clr-namespace:WhatsStatusApp.ViewModels"
+    Title="Details"
+    x:DataType="viewmodel:DetailsViewModel"
+    Shell.BackgroundColor="{Binding StatusModel.Color}"
+    Shell.NavBarIsVisible="{Binding HideNavBar, Converter={StaticResource InvertedBoolConverter}}">
+
+    <ContentPage.Resources>
+        <DataTemplate x:Key="LinkDataTemplate" x:DataType="model:Link">
+            <Frame
+                Margin="5,0"
+                Padding="5"
+                BackgroundColor="{StaticResource Gray900}"
+                BorderColor="{StaticResource Gray600}">
+                <Grid
+                    ColumnDefinitions="65,*"
+                    ColumnSpacing="5"
+                    RowDefinitions="20,45">
+                    <Frame
+                        Grid.RowSpan="2"
+                        Padding="5"
+                        BackgroundColor="{StaticResource Gray950}"
+                        BorderColor="{StaticResource Gray600}"
+                        IsClippedToBounds="True">
+                        <Image Aspect="AspectFit">
+                            <Image.Source>
+                                <UriImageSource CachingEnabled="True" Uri="{Binding Image}" />
+                            </Image.Source>
+                        </Image>
+                    </Frame>
+                    <Label
+                        Grid.Column="1"
+                        FontAttributes="Bold"
+                        LineBreakMode="TailTruncation"
+                        Text="{Binding Title}" />
+                    <Label
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        FontSize="Small"
+                        MaxLines="3"
+                        Text="{Binding Description}" />
+                </Grid>
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:DetailsViewModel}}, Path=OpenLinkWebViewPopupCommand}" CommandParameter="{Binding .}" />
+                </Frame.GestureRecognizers>
+            </Frame>
+        </DataTemplate>
+    </ContentPage.Resources>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Clicked="OptionsItem_Clicked" Text="Options">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="MDI" Glyph="{x:Static fonts:MaterialDesignIcons.DotsVertical}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior Command="{Binding ClosePageCommand}" />
+    </Shell.BackButtonBehavior>
+
+    <Grid RowDefinitions="auto, *">
+        <ScrollView Grid.Row="1" BackgroundColor="{Binding StatusModel.Color}">
+            <VerticalStackLayout Padding="5" VerticalOptions="Center">
+                <Label
+                    FontAutoScalingEnabled="True"
+                    FontFamily="{Binding StatusModel.Font}"
+                    FontSize="{Binding StatusModel.Size}"
+                    HorizontalTextAlignment="Center"
+                    SemanticProperties.Hint="Status text detail"
+                    Text="{Binding StatusModel.Text}"
+                    VerticalTextAlignment="Center" />
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Grid
+            Grid.RowSpan="2"
+            IsVisible="{Binding ShowOptionDrawer}"
+            RowDefinitions="*">
+            <BoxView />
+            <Border
+                Margin="10,0"
+                Padding="16,8"
+                Background="{StaticResource Gray950}"
+                Stroke="{StaticResource Gray600}"
+                StrokeShape="RoundRectangle 10"
+                StrokeThickness="2"
+                VerticalOptions="Center">
+                <VerticalStackLayout Spacing="10">
+                    <Label
+                        FontAttributes="Bold"
+                        FontFamily="PlayfairDisplayRegular"
+                        FontSize="25"
+                        Text="Status Options" />
+                    <Grid
+                        Padding="3"
+                        ColumnDefinitions="auto, *"
+                        ColumnSpacing="7">
+                        <Label
+                            FontFamily="MDI"
+                            FontSize="30"
+                            Text="{x:Static fonts:MaterialDesignIcons.TrashCan}" />
+                        <Label
+                            Grid.Column="1"
+                            FontAttributes="Bold"
+                            FontSize="20"
+                            Text="Delete"
+                            VerticalOptions="Center" />
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DeleteStatusCommand}" />
+                        </Grid.GestureRecognizers>
+                    </Grid>
+
+                    <Grid
+                        Padding="3"
+                        ColumnDefinitions="auto, *"
+                        ColumnSpacing="7">
+                        <Label
+                            FontFamily="MDI"
+                            FontSize="30"
+                            Text="{x:Static fonts:MaterialDesignIcons.ShareVariant}" />
+                        <Label
+                            Grid.Column="1"
+                            FontAttributes="Bold"
+                            FontSize="20"
+                            Text="Share"
+                            VerticalOptions="Center" />
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ShareStatusTextCommand}" />
+                        </Grid.GestureRecognizers>
+                    </Grid>
+
+                    <Grid
+                        Padding="3"
+                        ColumnDefinitions="auto, *"
+                        ColumnSpacing="7">
+                        <Label
+                            FontFamily="MDI"
+                            FontSize="30"
+                            Text="{x:Static fonts:MaterialDesignIcons.Link}" />
+                        <Label
+                            Grid.Column="1"
+                            FontAttributes="Bold"
+                            FontSize="20"
+                            Text="View Links"
+                            VerticalOptions="Center" />
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding PreviewLinksCommand}" />
+                        </Grid.GestureRecognizers>
+                    </Grid>
+
+                    <Label
+                        FontAttributes="Italic"
+                        FontFamily="PlayfairDisplayRegular"
+                        FontSize="Small"
+                        HorizontalTextAlignment="Center">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding StatusModel.DateCreated, StringFormat='Created At: {0:ddd, MMM HH:mm}'}" />
+                                <Span Text=" | " />
+                                <Span Text="{Binding StatusModel.Text.Length, StringFormat='{0} characters'}" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </VerticalStackLayout>
+            </Border>
+        </Grid>
+
+        <Grid
+            Grid.RowSpan="2"
+            IsVisible="{Binding ShowUrlListView}"
+            RowDefinitions=".7*, *">
+            <BoxView Grid.RowSpan="2" />
+            <Border
+                Grid.Row="1"
+                Padding="5,10,5,5"
+                Background="{StaticResource Gray950}"
+                Stroke="{StaticResource Gray600}"
+                StrokeShape="RoundRectangle 15,15,0,0"
+                StrokeThickness="2"
+                VerticalOptions="End">
+                <CollectionView ItemTemplate="{StaticResource LinkDataTemplate}" ItemsSource="{Binding LinksCollection}">
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout
+                            Orientation="Vertical"
+                            Span="1"
+                            VerticalItemSpacing="3" />
+                    </CollectionView.ItemsLayout>
+                </CollectionView>
+            </Border>
+        </Grid>
+
+        <ContentView
+            Grid.RowSpan="2"
+            ControlTemplate="{StaticResource IsLoadingView}"
+            IsVisible="{Binding IsBusy}" />
+    </Grid>
 </ContentPage>
