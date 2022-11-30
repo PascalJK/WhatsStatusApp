@@ -6,8 +6,15 @@ namespace WhatsStatusApp.ViewModels;
 [QueryProperty(nameof(StatusModel), nameof(Status))]
 public partial class DetailsViewModel : BaseViewModel
 {
+    #region Props
+    public List<Link> Links { get; set; } = new();
+    public ObservableRangeCollection<Link> LinksCollection { get; set; } = new();
+    #endregion
+
+    #region ObservableProperty
     [ObservableProperty] Status _StatusModel;
     [ObservableProperty] bool _ShowOptionDrawer, _ShowUrlListView;
+    #endregion
 
     [RelayCommand]
     public void LoadOptionsDrawer()
@@ -57,12 +64,19 @@ public partial class DetailsViewModel : BaseViewModel
         });
     }
 
+    /// <summary>
+    /// Todo 
+    /// 1. Once linkParser is done check links to make sure they dont have any matching urls.
+    /// 2. Once complete then fetch link data from internet using a parallel task.
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
     [RelayCommand]
     async Task PreviewLinksAsync()
     {
+        LinksCollection.Clear();
         await RunTryCatchAsync(async () =>
         {
-            LinksCollection.Clear();
             var links = linkParser.Matches(StatusModel.Text);
 
             if (links.Count <= 0)

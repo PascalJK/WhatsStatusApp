@@ -1,17 +1,33 @@
-﻿namespace WhatsStatusApp.ViewModels;
+﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
+using System.Text.RegularExpressions;
+
+namespace WhatsStatusApp.ViewModels;
 
 [INotifyPropertyChanged]
 public partial class BaseViewModel
 {
-    [ObservableProperty] bool _IsBusy;
-    [ObservableProperty] bool _HideNavBar;
+    public static readonly Regex linkParser = RegexLinkParser();
 
-	public ICommand ClosePageCommand 
-		=> new Command(async () => await OnBackButtonPressed());
+	#region ObservableProperties
+	[ObservableProperty] bool _IsBusy, _HideNavBar;
+	[ObservableProperty] int _LinksCount;
+	#endregion
 
-    public virtual async Task OnBackButtonPressed()
+	#region ICommand
+	public ICommand ClosePageCommand => new Command(async () => await OnBackButtonPressed());
+	#endregion
+
+	public virtual async Task OnBackButtonPressed()
     {
 		await ShellGoToAsync("..");
+    }
+
+	public static void CheckConnection()
+    {
+        if (Connectivity.NetworkAccess is NetworkAccess.Internet)
+            return;
+        throw new Exception("No internet connection");
     }
 
     protected async Task RunTryCatchAsync(Func<Task> func)
@@ -34,7 +50,31 @@ public partial class BaseViewModel
 		}
     }
 
-	public static async Task ShellGoToAsync(ShellNavigationState page)
+	public static void MakeToast(string message, ToastDuration duration = ToastDuration.Short)
+	{
+		CancellationToken cancellationToken = new();
+		Toast.Make(message, duration).Show(cancellationToken);
+	}
+
+    // Check out: https://learn.microsoft.com/en-us/dotnet/communitytoolkit/maui/alerts/snackbar?tabs=ios
+    /*public void MakeSnackBar(string message, ToastDuration duration = ToastDuration.Short)
+	{
+		CancellationToken cancellationToken = new();
+		var snackbaroptions = new SnackbarOptions
+		{
+			BackgroundColor = Color.FromArgb("#228C22"),
+			CornerRadius = 5,
+			ActionButtonTextColor = Colors.WhiteSmoke,
+		};
+
+		Snackbar.Make(message, actionButtonText:"Ok", action: async () =>
+		{
+
+		}).Show(cancellationToken);
+	}*/
+
+    #region Shell Navigation
+    public static async Task ShellGoToAsync(ShellNavigationState page)
 	{
 		await Shell.Current.GoToAsync(page);
 	}
@@ -43,4 +83,12 @@ public partial class BaseViewModel
 	{
 		await Shell.Current.GoToAsync(page, animate, dictionary);
 	}
+	#endregion
+
+	#region Status Links
+	public void GetLinksCount(string text) => LinksCount = linkParser.Matches(text).Count;
+	#endregion
+
+	[GeneratedRegex("\\b(?:https?://|www\\.)\\S+\\b", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.IgnorePatternWhitespace, "en-NA")]
+    private static partial Regex RegexLinkParser();
 }
