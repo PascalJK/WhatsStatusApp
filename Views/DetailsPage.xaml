@@ -16,11 +16,7 @@
 
     <ContentPage.Resources>
         <DataTemplate x:Key="LinkDataTemplate" x:DataType="model:Link">
-            <Frame
-                Margin="5,0"
-                Padding="5"
-                BackgroundColor="{StaticResource Gray900}"
-                BorderColor="{StaticResource Gray600}">
+            <Frame Margin="5,0" Padding="5">
                 <Grid
                     ColumnDefinitions="65,*"
                     ColumnSpacing="5"
@@ -28,8 +24,6 @@
                     <Frame
                         Grid.RowSpan="2"
                         Padding="5"
-                        BackgroundColor="{StaticResource Gray950}"
-                        BorderColor="{StaticResource Gray600}"
                         IsClippedToBounds="True">
                         <Image Aspect="AspectFit">
                             <Image.Source>
@@ -45,7 +39,7 @@
                     <Label
                         Grid.Row="1"
                         Grid.Column="1"
-                        FontSize="Small"
+                        FontSize="14"
                         MaxLines="3"
                         Text="{Binding Description}" />
                 </Grid>
@@ -85,10 +79,8 @@
         <Label
             Grid.Row="1"
             Margin="10,1,10,5"
-            FontAttributes="Italic"
-            FontFamily="PlayfairDisplayRegular"
-            FontSize="13"
-            HorizontalTextAlignment="Center">
+            HorizontalTextAlignment="Center"
+            Style="{StaticResource LabelSmall}">
             <Label.FormattedText>
                 <FormattedString>
                     <Span Text="{Binding StatusModel.DateCreated, StringFormat='Created At: {0:ddd, MMM HH:mm}'}" />
@@ -106,10 +98,9 @@
             <Border
                 Grid.Row="1"
                 Padding="5,10,5,5"
-                Background="{StaticResource Gray950}"
-                Stroke="{StaticResource Gray600}"
                 StrokeShape="RoundRectangle 15,15,0,0"
                 StrokeThickness="2"
+                Style="{StaticResource BorderStyle2}"
                 VerticalOptions="End">
                 <CollectionView ItemTemplate="{StaticResource LinkDataTemplate}" ItemsSource="{Binding LinksCollection}">
                     <CollectionView.ItemsLayout>

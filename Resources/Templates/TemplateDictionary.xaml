@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<?xaml-comp compile="true" ?>
+<ResourceDictionary
+    x:Class="WhatsStatusApp.Resources.Templates.TemplateDictionary"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:template="clr-namespace:WhatsStatusApp.Resources.Templates">
+
+    <ControlTemplate x:Key="IconButton" x:DataType="template:TextTemplate">
+        <Grid
+            Padding="3"
+            BindingContext="{Binding Source={RelativeSource TemplatedParent}}"
+            ColumnDefinitions="auto, *"
+            ColumnSpacing="7">
+            <Label Style="{StaticResource FontLabelStyle}" Text="{Binding IconGlyph}" />
+            <Label
+                Grid.Column="1"
+                Style="{StaticResource LabelMedium}"
+                Text="{Binding LabelText}"
+                VerticalOptions="Center" />
+        </Grid>
+    </ControlTemplate>
+</ResourceDictionary>

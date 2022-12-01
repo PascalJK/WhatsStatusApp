@@ -14,6 +14,17 @@
         ColumnDefinitions="*, auto"
         RowDefinitions="auto, auto, *, auto"
         RowSpacing="0">
+        <Label
+            Margin="10,5,0,0"
+            FontSize="45"
+            HorizontalOptions="Start"
+            Style="{StaticResource FontLabelStyle}"
+            Text="{x:Static fonts:MaterialDesignIcons.Close}">
+            <Label.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding ClosePageCommand}" />
+            </Label.GestureRecognizers>
+        </Label>
+
         <HorizontalStackLayout
             Grid.Column="1"
             Padding="0,10,10,5"
@@ -36,17 +47,6 @@
             </Label>
         </HorizontalStackLayout>
 
-        <Label
-            Margin="10,5,0,0"
-            FontSize="50"
-            HorizontalOptions="Start"
-            Style="{StaticResource FontLabelStyle}"
-            Text="{x:Static fonts:MaterialDesignIcons.Close}">
-            <Label.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding ClosePageCommand}" />
-            </Label.GestureRecognizers>
-        </Label>
-
         <VerticalStackLayout
             Grid.Row="1"
             Grid.ColumnSpan="2"
@@ -54,10 +54,8 @@
             IsVisible="{Binding ShowStatusFontEditor}">
             <Label FontSize="20" Text="Text Size" />
             <Slider
-                HeightRequest="25"
                 Maximum="50"
                 Minimum="14"
-                ThumbColor="{StaticResource Primary}"
                 Value="{Binding StatusFontSize}" />
         </VerticalStackLayout>
 
@@ -67,7 +65,6 @@
             Padding="10,20"
             VerticalOptions="Center">
             <Editor
-                x:Name="editor"
                 FontFamily="{Binding StatusFont}"
                 FontSize="{Binding StatusFontSize}"
                 HorizontalTextAlignment="Center"
@@ -75,8 +72,7 @@
                 MaxLength="{Binding StatusTextMaxLength}"
                 Placeholder="Type a status"
                 SemanticProperties.Hint="Type a status"
-                Text="{Binding StatusText}"
-                VerticalTextAlignment="Center" />
+                Text="{Binding StatusText}" />
         </ScrollView>
 
         <Grid
@@ -85,11 +81,10 @@
             Margin="5,5,10,10"
             ColumnDefinitions="*, auto">
             <Border
-                Padding="0.5"
-                BackgroundColor="{StaticResource Primary}"
+                Padding="1"
                 HorizontalOptions="Start"
-                Stroke="{StaticResource White}"
-                StrokeShape="RoundRectangle 5">
+                StrokeShape="RoundRectangle 5"
+                VerticalOptions="End">
                 <HorizontalStackLayout>
                     <CheckBox IsChecked="{Binding IsTextLimited}" IsEnabled="False" />
                     <Label
@@ -102,20 +97,13 @@
                     <TapGestureRecognizer Command="{Binding StatusTextLimitCommand}" />
                 </Border.GestureRecognizers>
             </Border>
+
             <Border
                 Grid.Column="1"
-                Padding="5"
-                BackgroundColor="{StaticResource Primary}"
-                HeightRequest="50"
                 IsVisible="{Binding StatusText, Converter={StaticResource IsStringNotNullOrWhiteSpaceConverter}}"
                 SemanticProperties.Hint="Save status typed Button"
-                Stroke="White"
-                StrokeShape="RoundRectangle 40"
-                WidthRequest="50">
-                <Label
-                    HorizontalOptions="Center"
-                    Style="{StaticResource FontLabelStyle}"
-                    Text="{x:Static fonts:MaterialDesignIcons.ContentSave}" />
+                Style="{StaticResource BorderStyle3}">
+                <Label Style="{StaticResource FontLabelStyle}" Text="{x:Static fonts:MaterialDesignIcons.ContentSave}" />
                 <Border.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding SaveStatusCommand}" />
                 </Border.GestureRecognizers>

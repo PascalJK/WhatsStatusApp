@@ -8,7 +8,7 @@
     x:Name="popup"
     CanBeDismissedByTappingOutsideOfPopup="False">
 
-    <Border BackgroundColor="{StaticResource Gray900}" Stroke="{StaticResource Gray600}">
+    <Border Style="{StaticResource BorderStyle2}">
         <Border.Resources>
             <Style BasedOn="{StaticResource FontLabelStyle}" TargetType="Label">
                 <Setter Property="FontSize" Value="30" />
