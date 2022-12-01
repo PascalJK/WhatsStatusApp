@@ -13,46 +13,96 @@ public partial class DetailsViewModel : BaseViewModel
 
     #region ObservableProperty
     [ObservableProperty] Status _StatusModel;
-    [ObservableProperty] bool _ShowOptionDrawer, _ShowUrlListView;
+    [ObservableProperty] bool _ShowUrlListView;
     #endregion
 
     [RelayCommand]
-    public void LoadOptionsDrawer()
+    async Task OpenOptionsPopupAsync()
     {
-        ShowOptionDrawer = !ShowOptionDrawer;
-        HideNavBar = ShowOptionDrawer;
+        if (ShowUrlListView)
+            return;
+
+        await RunTryCatchAsync(async () =>
+        {
+            HideNavBar = true;
+            var option = await Shell.Current.ShowPopupAsync(new StatusOptionsPopup());
+
+            switch ((string)option)
+            {
+                case "delete":
+                    await DeleteStatusAsync();
+                    break;
+                case "share":
+                    await ShareStatusTextAsync();
+                    break;
+                case "links":
+                    await PreviewLinksAsync();
+                    break;
+                default:
+                    break;
+            }
+        });
+        HideNavBar = false;
     }
 
-    [RelayCommand]
+    #region Options Popup Actions
     async Task DeleteStatusAsync()
     {
-        await RunTryCatchAsync(async () =>
-        {
-            var ans = await Shell.Current.DisplayAlert("", "Delete Status?", "Yes", "Cancel");
-            if (!ans)
-                return;
-            await LocalDatabaseService.LocalDB.DeleteStatusAsync(StatusModel);
-            LoadOptionsDrawer();
-            WeakReferenceMessenger.Default.Send(this);
-            MakeToast("Status Deleted.");
-            await base.OnBackButtonPressed();
-        });
+        var ans = await Shell.Current.DisplayAlert("", "Delete Status?", "Yes", "Cancel");
+        if (!ans)
+            return;
+        await LocalDatabaseService.LocalDB.DeleteStatusAsync(StatusModel);
+        WeakReferenceMessenger.Default.Send(this);
+        MakeToast("Status Deleted.");
+        await base.OnBackButtonPressed();
     }
 
-    [RelayCommand]
     async Task ShareStatusTextAsync()
     {
-        await RunTryCatchAsync(async () =>
+        await Share.Default.RequestAsync(new ShareTextRequest
         {
-            await Share.Default.RequestAsync(new ShareTextRequest
-            {
-                Text = StatusModel.Text,
-                Title = "Status"
-            });
-            await Task.Delay(500);
-            LoadOptionsDrawer();
+            Text = StatusModel.Text,
+            Title = "Status"
         });
+        await Task.Delay(500);
     }
+
+    /// <summary>
+    /// Todo 
+    /// 1. Once linkParser is done check links to make sure they dont have any matching urls.
+    /// 2. Once complete then fetch link data from internet using a parallel task.
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
+    async Task PreviewLinksAsync()
+    {
+        LinksCollection.Clear();
+        var matches = linkParser.Matches(StatusModel.Text);
+
+        if (matches.Count <= 0)
+            throw new Exception("No links found in your status text.");
+
+        var links = matches.ToLookup(m => m.Value);
+
+        CheckConnection();
+
+        var task = links.Select(async match =>
+        {
+            string url = match.Key;
+            var link = Links.FirstOrDefault(element => element.URL == url);
+
+            link ??= await GetLinkData(url);
+
+            if (link is not null)
+                LinksCollection.Add(link);
+        });
+
+        await Task.WhenAll(task);
+
+        Links = LinksCollection.ToList();
+        ShowUrlListView = Links.Count > 0;
+    }
+    #endregion
 
     #region Status Link
     [RelayCommand]
@@ -64,49 +114,16 @@ public partial class DetailsViewModel : BaseViewModel
         });
     }
 
-    /// <summary>
-    /// Todo 
-    /// 1. Once linkParser is done check links to make sure they dont have any matching urls.
-    /// 2. Once complete then fetch link data from internet using a parallel task.
-    /// </summary>
-    /// <returns></returns>
-    /// <exception cref="Exception"></exception>
-    [RelayCommand]
-    async Task PreviewLinksAsync()
-    {
-        LinksCollection.Clear();
-        await RunTryCatchAsync(async () =>
-        {
-            var links = linkParser.Matches(StatusModel.Text);
-
-            if (links.Count <= 0)
-                throw new Exception("No links found in your status text.");
-
-            foreach (var item in links)
-            {
-                string url = item.ToString();
-                var link = Links.FirstOrDefault(element => element.URL == url);
-                link ??= await GetLinkData(url);
-                if (link != null)
-                    LinksCollection.Add(link);
-            }
-            Links = LinksCollection.ToList();
-            LoadOptionsDrawer();
-            ShowUrlListView = true;
-        });
-    }
-
     private static async Task<Link> GetLinkData(string url)
     {
         try
         {
-            CheckConnection();
             var graph = await OpenGraph.ParseUrlAsync(url);
             return new Link().DecodeMetaInformation(graph);
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            MakeToast($"{url} \nerror:{ex.Message}");
             return null;
         }
     }
@@ -116,11 +133,6 @@ public partial class DetailsViewModel : BaseViewModel
     {
         await RunTryCatchAsync(async () =>
         {
-            if (ShowOptionDrawer)
-            {
-                LoadOptionsDrawer();
-                return;
-            }
             if (ShowUrlListView)
             {
                 ShowUrlListView = false;

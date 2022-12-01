@@ -8,13 +8,6 @@ public class Link
     public string Description { get; set; }
     public string Image { get; set; }
     public string URL { get; set; }
-    public bool Found
-    {
-        get
-        {
-            return !string.IsNullOrEmpty(Title) || !string.IsNullOrEmpty(Description) || !string.IsNullOrEmpty(Image);
-        }
-    }
 
     readonly string noDescription = @"no description";
     readonly string defaultImage = @"https://img.icons8.com/emoji/80/000000/link-emoji.png";

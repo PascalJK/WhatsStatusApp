@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup
+    x:Class="WhatsStatusApp.Views.Popups.StatusOptionsPopup"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:fonts="clr-namespace:WhatsStatusApp.Resources.Fonts"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    Color="{StaticResource Gray950}">
+
+    <Border
+        Margin="10,0"
+        Padding="16,8"
+        Background="{StaticResource Gray950}"
+        Stroke="{StaticResource Gray600}"
+        StrokeShape="RoundRectangle 10"
+        StrokeThickness="2"
+        VerticalOptions="Center">
+        <VerticalStackLayout Spacing="10">
+            <Label
+                FontAttributes="Bold"
+                FontFamily="PlayfairDisplayRegular"
+                FontSize="25"
+                Text="Status Options" />
+            <Grid
+                Padding="3"
+                ColumnDefinitions="auto, *"
+                ColumnSpacing="7">
+                <Label
+                    FontFamily="MDI"
+                    FontSize="30"
+                    Text="{x:Static fonts:MaterialDesignIcons.TrashCan}" />
+                <Label
+                    Grid.Column="1"
+                    FontAttributes="Bold"
+                    FontSize="20"
+                    Text="Delete"
+                    VerticalOptions="Center" />
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="DeleteStatus_Tapped" />
+                </Grid.GestureRecognizers>
+            </Grid>
+
+            <Grid
+                Padding="3"
+                ColumnDefinitions="auto, *"
+                ColumnSpacing="7">
+                <Label
+                    FontFamily="MDI"
+                    FontSize="30"
+                    Text="{x:Static fonts:MaterialDesignIcons.ShareVariant}" />
+                <Label
+                    Grid.Column="1"
+                    FontAttributes="Bold"
+                    FontSize="20"
+                    Text="Share"
+                    VerticalOptions="Center" />
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="ShareStatus_Tapped" />
+                </Grid.GestureRecognizers>
+            </Grid>
+
+            <Grid
+                Padding="3"
+                ColumnDefinitions="auto, *"
+                ColumnSpacing="7">
+                <Label
+                    FontFamily="MDI"
+                    FontSize="30"
+                    Text="{x:Static fonts:MaterialDesignIcons.Link}" />
+                <Label
+                    Grid.Column="1"
+                    FontAttributes="Bold"
+                    FontSize="20"
+                    Text="View Links"
+                    VerticalOptions="Center" />
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="ViewLinksStatus_Tapped" />
+                </Grid.GestureRecognizers>
+            </Grid>
+        </VerticalStackLayout>
+    </Border>
+</toolkit:Popup>
