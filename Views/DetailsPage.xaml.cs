@@ -11,11 +11,6 @@ public partial class DetailsPage : ContentPage
 		vm = viewModel;
 	}
 
-    private void OptionsItem_Clicked(object sender, EventArgs e)
-    {
-		vm.LoadOptionsDrawerCommand.Execute(null);
-    }
-
 	protected override bool OnBackButtonPressed()
 	{
 		vm.ClosePageCommand.Execute(null);
