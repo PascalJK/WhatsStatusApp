@@ -6,6 +6,27 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:template="clr-namespace:WhatsStatusApp.Resources.Templates">
 
+    <ControlTemplate x:Key="IsLoadingView">
+        <Grid RowDefinitions="*">
+            <BoxView />
+            <Frame
+                Padding="20,15"
+                CornerRadius="10"
+                HorizontalOptions="Center"
+                VerticalOptions="Center">
+                <VerticalStackLayout>
+                    <ActivityIndicator IsRunning="True" />
+                    <Label
+                        FontAttributes="Bold"
+                        FontFamily="OpenSansSemibold"
+                        FontSize="Subtitle"
+                        HorizontalTextAlignment="Center"
+                        Text="Please Wait..." />
+                </VerticalStackLayout>
+            </Frame>
+        </Grid>
+    </ControlTemplate>
+
     <ControlTemplate x:Key="IconButton" x:DataType="template:TextTemplate">
         <Grid
             Padding="3"
