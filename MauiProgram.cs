@@ -25,11 +25,18 @@ public static class MauiProgram
 				fonts.AddFont("materialdesignicons.ttf", "MDI");
 			});
 
-		//Services
+        //Services
+        builder.Services.AddTransient<LocalDatabaseService>();
+
+        // ViewModels
+        builder.Services.AddTransient<DetailsViewModel>();
 		builder.Services.AddSingleton<MainPageViewModel>();
-		builder.Services.AddSingleton<MainPage>();
-		builder.Services.AddTransient<DetailsViewModel>();
+		builder.Services.AddSingleton<SettingsPageViewModel>();
+
+		// Views
 		builder.Services.AddTransient<DetailsPage>();
+		builder.Services.AddSingleton<MainPage>();
+		builder.Services.AddSingleton<SettingsPage>();
 
 		return builder.Build();
 	}

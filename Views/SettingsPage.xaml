@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="WhatsStatusApp.Views.SettingsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewmodel="clr-namespace:WhatsStatusApp.ViewModels"
+    Title="Settings"
+    x:DataType="viewmodel:SettingsPageViewModel"
+    BackgroundColor="{StaticResource Black}"
+    Shell.NavBarHasShadow="{Binding HideNavBar, Converter={StaticResource InvertedBoolConverter}}"
+    Shell.NavBarIsVisible="{Binding HideNavBar, Converter={StaticResource InvertedBoolConverter}}">
+
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior Command="{Binding ClosePageCommand}" />
+    </Shell.BackButtonBehavior>
+
+    <Grid>
+        <VerticalStackLayout>
+            <Border Padding="10,8" Style="{StaticResource BorderStyle2}">
+                <VerticalStackLayout>
+                    <Label Style="{StaticResource LabelSubtitle}" Text="App Info" />
+                    <Label Text="{Binding AppName, StringFormat='App Name: {0}'}" />
+                    <Label Text="{Binding AppVersion, StringFormat='App Version: {0}'}" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Border Padding="10,8" Style="{StaticResource BorderStyle2}">
+                <VerticalStackLayout>
+                    <Label Style="{StaticResource LabelSubtitle}" Text="Status Stats" />
+                    <Label Text="{Binding AppName, StringFormat='Opened: {0}'}" />
+                    <Label Text="{Binding AppVersion, StringFormat='Deleted: {0}'}" />
+                    <Label Text="{Binding AppVersion, StringFormat='Links Clicked: {0}'}" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Button
+                Margin="15,5"
+                BackgroundColor="Red"
+                Command="{Binding ClearDatabaseCommand}"
+                Text="Clear Status Data" />
+        </VerticalStackLayout>
+
+        <ContentView ControlTemplate="{StaticResource IsLoadingView}" IsVisible="{Binding IsBusy}" />
+    </Grid>
+</ContentPage>

@@ -6,7 +6,7 @@
         <Setter Property="Color" Value="{StaticResource Primary}" />
     </Style>
 
-    <!--#region Borders-->
+    <!--#region Borders + Frames-->
     <Style x:Key="BorderStyle" TargetType="Border">
         <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
         <Setter Property="Stroke" Value="{StaticResource White}" />
@@ -35,12 +35,12 @@
         <Setter Property="BackgroundColor" Value="{StaticResource Gray950}" />
         <Setter Property="BorderColor" Value="{StaticResource Gray600}" />
     </Style>
-    <!--#endregion-->
 
     <Style BasedOn="{StaticResource FrameStyle}" TargetType="Frame">
         <Setter Property="HasShadow" Value="False" />
         <Setter Property="CornerRadius" Value="8" />
     </Style>
+    <!--#endregion-->
 
     <Style TargetType="Slider">
         <Setter Property="ThumbColor" Value="{StaticResource Primary}" />
@@ -72,6 +72,12 @@
                 </VisualStateGroup>
             </VisualStateGroupList>
         </Setter>
+    </Style>
+
+    <Style TargetType="Button">
+        <Setter Property="FontSize" Value="22" />
+        <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+        <Setter Property="TextColor" Value="WhiteSmoke" />
     </Style>
 
     <!--#region Labels-->
