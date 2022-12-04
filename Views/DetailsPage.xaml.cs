@@ -9,7 +9,8 @@ public partial class DetailsPage : ContentPage
 		InitializeComponent();
 		BindingContext = viewModel;
 		vm = viewModel;
-	}
+        Preferences.Set("status_opened", Preferences.Get("status_opened", 0) + 1);
+    }
 
 	protected override bool OnBackButtonPressed()
 	{

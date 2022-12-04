@@ -5,6 +5,7 @@ namespace WhatsStatusApp.Views.Popups;
 public partial class WebViewPopup : Popup
 {
     string url;
+
 	public WebViewPopup(Link link)
     {
         InitializeComponent();
@@ -17,6 +18,8 @@ public partial class WebViewPopup : Popup
         GetDeviceSize();
 
         webview.Source = link.URL;
+
+        Preferences.Set("status_links_visited", Preferences.Get("status_links_visited", 0) + 1);
     }
 
     private void GetDeviceSize()

@@ -48,11 +48,12 @@ public partial class DetailsViewModel : BaseViewModel
     #region Options Popup Actions
     async Task DeleteStatusAsync()
     {
-        var ans = await Shell.Current.DisplayAlert("", "Delete Status?", "Yes", "Cancel");
+        var ans = await DisplayAlert("", "Delete Status?", "Yes");
         if (!ans)
             return;
         await LocalDatabaseService.LocalDB.DeleteStatusAsync(StatusModel);
         WeakReferenceMessenger.Default.Send(this);
+        Preferences.Set("status_deleted", Preferences.Get("status_deleted", 0) + 1);
         MakeToast("Status Deleted.");
         await base.OnBackButtonPressed();
     }
@@ -110,6 +111,7 @@ public partial class DetailsViewModel : BaseViewModel
     {
         await RunTryCatchAsync(async () =>
         {
+            CheckConnection();
             await Shell.Current.ShowPopupAsync(new WebViewPopup(link));
         });
     }

@@ -27,9 +27,9 @@
             <Border Padding="10,8" Style="{StaticResource BorderStyle2}">
                 <VerticalStackLayout>
                     <Label Style="{StaticResource LabelSubtitle}" Text="Status Stats" />
-                    <Label Text="{Binding AppName, StringFormat='Opened: {0}'}" />
-                    <Label Text="{Binding AppVersion, StringFormat='Deleted: {0}'}" />
-                    <Label Text="{Binding AppVersion, StringFormat='Links Clicked: {0}'}" />
+                    <Label Text="{Binding OpenedCount, StringFormat='Opened: {0}'}" />
+                    <Label Text="{Binding DeletedCount, StringFormat='Deleted: {0}'}" />
+                    <Label Text="{Binding LinksVisitedCount, StringFormat='Links Visited: {0}'}" />
                 </VerticalStackLayout>
             </Border>
 
