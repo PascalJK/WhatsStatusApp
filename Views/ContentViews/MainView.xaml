@@ -25,16 +25,17 @@
                 Padding="10"
                 BackgroundColor="{Binding Color}"
                 CornerRadius="1">
-                <VerticalStackLayout>
+                <Grid RowDefinitions="auto, auto">
                     <Label
                         FontFamily="{Binding Font}"
                         MaxLines="3"
                         Text="{Binding Text}" />
                     <Label
+                        Grid.Row="1"
                         HorizontalOptions="End"
                         Style="{StaticResource LabelSmall}"
                         Text="{Binding DateCreated, StringFormat='{0:HH:mm}'}" />
-                </VerticalStackLayout>
+                </Grid>
                 <Frame.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainPageViewModel}}, Path=LoadStatusDetailCommand}" CommandParameter="{Binding .}" />
                 </Frame.GestureRecognizers>
@@ -46,6 +47,7 @@
         ColumnDefinitions="*, auto"
         RowDefinitions="auto, *"
         RowSpacing="0">
+
         <Border
             Grid.ColumnSpan="2"
             Padding="10,5"
@@ -69,7 +71,6 @@
                         Margin="0,3"
                         FontAttributes="Bold"
                         FontFamily="UbuntuRegular"
-                        FontSize="17"
                         HorizontalTextAlignment="Center"
                         Text="{Binding Date, StringFormat='{0:d MMMM yyyy}'}" />
                 </DataTemplate>
