@@ -18,9 +18,8 @@
                     <ActivityIndicator IsRunning="True" />
                     <Label
                         FontAttributes="Bold"
-                        FontFamily="OpenSansSemibold"
-                        FontSize="Subtitle"
                         HorizontalTextAlignment="Center"
+                        Style="{StaticResource LabelMedium}"
                         Text="Please Wait..." />
                 </VerticalStackLayout>
             </Frame>
@@ -29,7 +28,7 @@
 
     <ControlTemplate x:Key="IconButton" x:DataType="template:TextTemplate">
         <Grid
-            Padding="3"
+            Padding="5,3,5,3"
             BindingContext="{Binding Source={RelativeSource TemplatedParent}}"
             ColumnDefinitions="auto, *"
             ColumnSpacing="7">

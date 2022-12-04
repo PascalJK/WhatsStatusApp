@@ -53,6 +53,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove=".gitattributes" />
+	  <None Remove=".gitignore" />
 	  <None Remove="Resources\Fonts\DancingScript-Regular.ttf" />
 	  <None Remove="Resources\Fonts\IndieFlower-Regular.ttf" />
 	  <None Remove="Resources\Fonts\materialdesignicons.ttf" />

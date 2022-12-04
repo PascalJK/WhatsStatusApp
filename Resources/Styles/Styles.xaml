@@ -130,7 +130,7 @@
         x:Key="LabelSmall"
         BasedOn="{StaticResource LabelStyle}"
         TargetType="Label">
-        <Setter Property="FontSize" Value="{OnIdiom 13, Desktop=30}" />
+        <Setter Property="FontSize" Value="{OnIdiom 13, Desktop=15}" />
         <Setter Property="FontFamily" Value="PlayfairDisplayRegular" />
     </Style>
 
