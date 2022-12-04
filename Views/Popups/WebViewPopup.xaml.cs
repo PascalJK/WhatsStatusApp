@@ -9,33 +9,32 @@ public partial class WebViewPopup : Popup
     {
         InitializeComponent();
 
-        DeviceDisplay.MainDisplayInfoChanged += DeviceDisplay_MainDisplayInfoChanged;
+        WeakReferenceMessenger.Default.Register<DisplayInfoChangedEventArgs>(this, (r, m)
+            => GetDeviceSize());
 
         webview.Navigating += Webview_Navigating;
 
-        GetDeviceSize(DeviceDisplay.MainDisplayInfo);
+        GetDeviceSize();
 
         webview.Source = link.URL;
     }
 
-    private void DeviceDisplay_MainDisplayInfoChanged(object sender, DisplayInfoChangedEventArgs e)
-        => GetDeviceSize(e.DisplayInfo);
+    private void GetDeviceSize()
+        => popup.Size = App.GetDeviceSize();
 
+    #region Webview
     private void Webview_Navigating(object sender, WebNavigatingEventArgs e)
-        => url = e.Url;
-
-    private void GetDeviceSize(DisplayInfo mainDisplayInfo) 
-        => popup.Size = new Size(mainDisplayInfo.Width / 2, mainDisplayInfo.Height / 2.2);
+    => url = e.Url;
 
     private void WebViewGoBack_Tapped(object sender, TappedEventArgs e)
     {
-        if(webview.CanGoBack)
+        if (webview.CanGoBack)
             webview.GoBack();
     }
 
     private void WebViewGoForward_Tapped(object sender, TappedEventArgs e)
     {
-        if(webview.CanGoForward)
+        if (webview.CanGoForward)
             webview.GoForward();
     }
 
@@ -56,5 +55,11 @@ public partial class WebViewPopup : Popup
         {
             await Shell.Current.DisplayAlert("", x.Message, "Ok");
         }
+    }
+    #endregion
+
+    private void Popup_Closed(object sender, CommunityToolkit.Maui.Core.PopupClosedEventArgs e)
+    {
+        WeakReferenceMessenger.Default.Unregister<DisplayInfoChangedEventArgs>(this);
     }
 }

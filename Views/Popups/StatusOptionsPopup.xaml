@@ -6,43 +6,53 @@
     xmlns:fonts="clr-namespace:WhatsStatusApp.Resources.Fonts"
     xmlns:template="clr-namespace:WhatsStatusApp.Resources.Templates"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-    Color="{StaticResource Gray950}">
+    x:Name="popup"
+    Color="Transparent">
 
-    <Border
-        Margin="10,0"
-        Padding="16,8"
-        StrokeShape="RoundRectangle 10"
-        StrokeThickness="2"
-        Style="{StaticResource BorderStyle2}"
-        VerticalOptions="Center">
-        <VerticalStackLayout Spacing="10">
-            <Label Style="{StaticResource LabelSubtitle}" Text="Status Options" />
-            <template:TextTemplate
-                ControlTemplate="{StaticResource IconButton}"
-                IconGlyph="{x:Static fonts:MaterialDesignIcons.TrashCan}"
-                LabelText="Delete">
-                <template:TextTemplate.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="DeleteStatus_Tapped" />
-                </template:TextTemplate.GestureRecognizers>
-            </template:TextTemplate>
+    <Grid>
+        <Button
+            BackgroundColor="Transparent"
+            BorderColor="Transparent"
+            Clicked="Button_Clicked" />
 
-            <template:TextTemplate
-                ControlTemplate="{StaticResource IconButton}"
-                IconGlyph="{x:Static fonts:MaterialDesignIcons.ShareVariant}"
-                LabelText="Share">
-                <template:TextTemplate.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="ShareStatus_Tapped" />
-                </template:TextTemplate.GestureRecognizers>
-            </template:TextTemplate>
+        <Border
+            Padding="10,8"
+            BackgroundColor="{StaticResource Gray950}"
+            HorizontalOptions="Center"
+            StrokeShape="RoundRectangle 10"
+            StrokeThickness="2"
+            Style="{StaticResource BorderStyle2}"
+            VerticalOptions="Center">
+            <VerticalStackLayout Spacing="8">
+                <Label Style="{StaticResource LabelSubtitle}" Text="Status Options" />
 
-            <template:TextTemplate
-                ControlTemplate="{StaticResource IconButton}"
-                IconGlyph="{x:Static fonts:MaterialDesignIcons.Link}"
-                LabelText="View Links">
-                <template:TextTemplate.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="ViewLinksStatus_Tapped" />
-                </template:TextTemplate.GestureRecognizers>
-            </template:TextTemplate>
-        </VerticalStackLayout>
-    </Border>
+                <template:TextTemplate
+                    ControlTemplate="{StaticResource IconButton}"
+                    IconGlyph="{x:Static fonts:MaterialDesignIcons.TrashCan}"
+                    LabelText="Delete">
+                    <template:TextTemplate.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="DeleteStatus_Tapped" />
+                    </template:TextTemplate.GestureRecognizers>
+                </template:TextTemplate>
+
+                <template:TextTemplate
+                    ControlTemplate="{StaticResource IconButton}"
+                    IconGlyph="{x:Static fonts:MaterialDesignIcons.ShareVariant}"
+                    LabelText="Share">
+                    <template:TextTemplate.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="ShareStatus_Tapped" />
+                    </template:TextTemplate.GestureRecognizers>
+                </template:TextTemplate>
+
+                <template:TextTemplate
+                    ControlTemplate="{StaticResource IconButton}"
+                    IconGlyph="{x:Static fonts:MaterialDesignIcons.Link}"
+                    LabelText="View Links">
+                    <template:TextTemplate.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="ViewLinksStatus_Tapped" />
+                    </template:TextTemplate.GestureRecognizers>
+                </template:TextTemplate>
+            </VerticalStackLayout>
+        </Border>
+    </Grid>
 </toolkit:Popup>

@@ -6,7 +6,8 @@
     xmlns:fonts="clr-namespace:WhatsStatusApp.Resources.Fonts"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:Name="popup"
-    CanBeDismissedByTappingOutsideOfPopup="False">
+    CanBeDismissedByTappingOutsideOfPopup="False"
+    Closed="Popup_Closed">
 
     <Border Style="{StaticResource BorderStyle2}">
         <Border.Resources>

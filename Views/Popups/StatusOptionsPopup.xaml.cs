@@ -5,9 +5,9 @@ namespace WhatsStatusApp.Views.Popups;
 public partial class StatusOptionsPopup : Popup
 {
 	public StatusOptionsPopup()
-	{
-		InitializeComponent();
-	}
+    {
+        InitializeComponent();
+    }
 
     private void DeleteStatus_Tapped(object sender, TappedEventArgs e)
         => Close("delete");
@@ -17,4 +17,7 @@ public partial class StatusOptionsPopup : Popup
 
     private void ViewLinksStatus_Tapped(object sender, TappedEventArgs e)
         => Close("links");
+
+    private void Button_Clicked(object sender, EventArgs e)
+        => Close();
 }
