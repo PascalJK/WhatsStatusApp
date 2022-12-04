@@ -8,7 +8,6 @@ public partial class MainPageViewModel : BaseViewModel
     readonly int textMaxLength = 700;
     readonly List<Color> backgroudColors = LoadStatusBackgroundColors();
     readonly List<string> fonts = LoadStatusFonts();
-    readonly Random random = new();
     #endregion
 
     #region ObservableProperties
@@ -39,6 +38,9 @@ public partial class MainPageViewModel : BaseViewModel
 
         WeakReferenceMessenger.Default.Register<DetailsViewModel>(this, async (r, m) 
             => await LoadStatusListDataAsync());
+
+        WeakReferenceMessenger.Default.Register<SettingsPageViewModel>(this, async (r, m) 
+            => await GetSavedStatusListAsync());
     }
 
     private async Task LoadStatusListDataAsync()
@@ -178,6 +180,7 @@ public partial class MainPageViewModel : BaseViewModel
             DismissStatusEditor();
         });
     }
+
     [RelayCommand]
     async Task GetSavedStatusListAsync()
     {

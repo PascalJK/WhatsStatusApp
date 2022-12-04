@@ -7,6 +7,7 @@ namespace WhatsStatusApp.ViewModels;
 [INotifyPropertyChanged]
 public partial class BaseViewModel
 {
+    public static readonly Random random = new();
     public static readonly Regex linkParser = RegexLinkParser();
 
 	#region ObservableProperties
@@ -41,7 +42,28 @@ public partial class BaseViewModel
 		}
 		catch (Exception x)
 		{
-			await Shell.Current.DisplayAlert("", x.Message, "OK");
+
+/* Unmerged change from project 'WhatsStatusApp (net7.0-windows10.0.19041.0)'
+Before:
+			DisplayAlert("", x.Message);
+After:
+            BaseViewModel.DisplayAlert("", x.Message);
+*/
+
+/* Unmerged change from project 'WhatsStatusApp (net7.0-ios)'
+Before:
+			DisplayAlert("", x.Message);
+After:
+            BaseViewModel.DisplayAlert("", x.Message);
+*/
+
+/* Unmerged change from project 'WhatsStatusApp (net7.0-maccatalyst)'
+Before:
+			DisplayAlert("", x.Message);
+After:
+            BaseViewModel.DisplayAlert("", x.Message);
+*/
+            DisplayAlert("", x.Message);
 		}
 		finally
 		{
@@ -50,14 +72,25 @@ public partial class BaseViewModel
 		}
     }
 
+	#region Alerts
+	public static void DisplayAlert(string title, string message)
+	{
+		Shell.Current.DisplayAlert(title, message, "OK").Wait(250);
+	}
+
+	public static async Task<bool> DisplayAlert(string title, string message, string accept, string cancel = "Cancel")
+	{
+		return await Shell.Current.DisplayAlert(title, message, accept, cancel);
+	}
+
 	public static void MakeToast(string message, ToastDuration duration = ToastDuration.Short)
 	{
 		CancellationToken cancellationToken = new();
 		Toast.Make(message, duration).Show(cancellationToken);
 	}
 
-    // Check out: https://learn.microsoft.com/en-us/dotnet/communitytoolkit/maui/alerts/snackbar?tabs=ios
-    /*public void MakeSnackBar(string message, ToastDuration duration = ToastDuration.Short)
+	// Check out: https://learn.microsoft.com/en-us/dotnet/communitytoolkit/maui/alerts/snackbar?tabs=ios
+	/*public void MakeSnackBar(string message, ToastDuration duration = ToastDuration.Short)
 	{
 		CancellationToken cancellationToken = new();
 		var snackbaroptions = new SnackbarOptions
@@ -72,8 +105,16 @@ public partial class BaseViewModel
 
 		}).Show(cancellationToken);
 	}*/
+	#endregion
 
-    #region Shell Navigation
+	#region Shell Navigation
+	[RelayCommand]
+    public async Task RunIsBusy_ShellGoToAsync(string page)
+	{
+		await RunTryCatchAsync(async ()
+			=> await ShellGoToAsync(page));
+	}
+
     public static async Task ShellGoToAsync(ShellNavigationState page)
 	{
 		await Shell.Current.GoToAsync(page);
