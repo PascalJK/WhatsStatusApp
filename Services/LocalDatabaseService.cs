@@ -21,6 +21,7 @@ internal class LocalDatabaseService : ILocalDatabase
         await InitializeDatabase();
         await database.InsertAsync(status);
     }
+
     public async Task DeleteStatusAsync(Status status)
     {
         await InitializeDatabase();

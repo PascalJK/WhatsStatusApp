@@ -42,27 +42,6 @@ public partial class BaseViewModel
 		}
 		catch (Exception x)
 		{
-
-/* Unmerged change from project 'WhatsStatusApp (net7.0-windows10.0.19041.0)'
-Before:
-			DisplayAlert("", x.Message);
-After:
-            BaseViewModel.DisplayAlert("", x.Message);
-*/
-
-/* Unmerged change from project 'WhatsStatusApp (net7.0-ios)'
-Before:
-			DisplayAlert("", x.Message);
-After:
-            BaseViewModel.DisplayAlert("", x.Message);
-*/
-
-/* Unmerged change from project 'WhatsStatusApp (net7.0-maccatalyst)'
-Before:
-			DisplayAlert("", x.Message);
-After:
-            BaseViewModel.DisplayAlert("", x.Message);
-*/
             DisplayAlert("", x.Message);
 		}
 		finally
@@ -88,23 +67,6 @@ After:
 		CancellationToken cancellationToken = new();
 		Toast.Make(message, duration).Show(cancellationToken);
 	}
-
-	// Check out: https://learn.microsoft.com/en-us/dotnet/communitytoolkit/maui/alerts/snackbar?tabs=ios
-	/*public void MakeSnackBar(string message, ToastDuration duration = ToastDuration.Short)
-	{
-		CancellationToken cancellationToken = new();
-		var snackbaroptions = new SnackbarOptions
-		{
-			BackgroundColor = Color.FromArgb("#228C22"),
-			CornerRadius = 5,
-			ActionButtonTextColor = Colors.WhiteSmoke,
-		};
-
-		Snackbar.Make(message, actionButtonText:"Ok", action: async () =>
-		{
-
-		}).Show(cancellationToken);
-	}*/
 	#endregion
 
 	#region Shell Navigation
