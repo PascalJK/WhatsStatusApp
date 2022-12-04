@@ -31,17 +31,20 @@
                             </Image.Source>
                         </Image>
                     </Frame>
-                    <Label
+                    <Grid
+                        Grid.RowSpan="2"
                         Grid.Column="1"
-                        FontAttributes="Bold"
-                        LineBreakMode="TailTruncation"
-                        Text="{Binding Title}" />
-                    <Label
-                        Grid.Row="1"
-                        Grid.Column="1"
-                        FontSize="14"
-                        MaxLines="3"
-                        Text="{Binding Description}" />
+                        RowDefinitions="auto, auto">
+                        <Label
+                            FontAttributes="Bold"
+                            LineBreakMode="TailTruncation"
+                            Style="{StaticResource LabelSmall}"
+                            Text="{Binding Title}" />
+                        <Label
+                            Grid.Row="1"
+                            Style="{StaticResource LabelSmall}"
+                            Text="{Binding Description}" />
+                    </Grid>
                 </Grid>
                 <Frame.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:DetailsViewModel}}, Path=OpenLinkWebViewPopupCommand}" CommandParameter="{Binding .}" />
