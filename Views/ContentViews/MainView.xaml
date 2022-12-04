@@ -9,7 +9,7 @@
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:viewmodel="clr-namespace:WhatsStatusApp.ViewModels"
     x:DataType="viewmodel:MainPageViewModel"
-    BackgroundColor="Black">
+    BackgroundColor="{StaticResource Black}">
 
     <ContentView.Resources>
         <Style
@@ -136,10 +136,10 @@
                     </Label.GestureRecognizers>
                 </Label>
             </Border>
-            <Border SemanticProperties.Hint="Save status typed Button" Style="{StaticResource BorderStyle3}">
+            <Border SemanticProperties.Hint="Goto Settings Page Button" Style="{StaticResource BorderStyle3}">
                 <Label Style="{StaticResource FontLabelStyle}" Text="{x:Static fonts:MaterialDesignIcons.Cog}">
                     <Label.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding LoadStatusEditorCommand}" />
+                        <TapGestureRecognizer Command="{Binding RunIsBusy_ShellGoToCommand}" CommandParameter="SettingsPage" />
                     </Label.GestureRecognizers>
                 </Label>
             </Border>
