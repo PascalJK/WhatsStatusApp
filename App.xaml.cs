@@ -15,7 +15,7 @@ public partial class App : Application
     protected override Window CreateWindow(IActivationState activationState)
     {
 		if (DeviceInfo.Current.Idiom != DeviceIdiom.Desktop)
-			return null;
+			return base.CreateWindow(activationState);
 
         var window = base.CreateWindow(activationState);
 		window.MinimumHeight = 555;
