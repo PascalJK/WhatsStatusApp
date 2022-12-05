@@ -22,6 +22,9 @@ public static class MauiProgram
 				fonts.AddFont("PlayfairDisplay-Regular.ttf", "PlayfairDisplayRegular");
 				fonts.AddFont("RubikDistressed-Regular.ttf", "RubikDistressedRegular");
 				fonts.AddFont("Ubuntu-Regular.ttf", "UbuntuRegular");
+				fonts.AddFont("Teko-Regular.ttf", "TekoRegular");
+				fonts.AddFont("Acme-Regular.ttf", "AcmeRegular");
+				fonts.AddFont("PermanentMarker-Regular.ttf", "PermanentMarkerRegular");
 				fonts.AddFont("materialdesignicons.ttf", "MDI");
 			});
 

@@ -7,10 +7,10 @@
     xmlns:model="clr-namespace:WhatsStatusApp.Models"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:viewmodel="clr-namespace:WhatsStatusApp.ViewModels"
-    x:DataType="viewmodel:MainPageViewModel">
+    x:DataType="viewmodel:MainPageViewModel"
+    BackgroundColor="{Binding StatusBackgroundColor}">
 
     <Grid
-        BackgroundColor="{Binding StatusBackgroundColor}"
         ColumnDefinitions="*, auto"
         RowDefinitions="auto, auto, *, auto"
         RowSpacing="0">

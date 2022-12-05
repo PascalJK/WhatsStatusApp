@@ -132,8 +132,14 @@ public partial class MainPageViewModel : BaseViewModel
             Color.FromArgb("2d3436"),
             Color.FromArgb("FFC107"),
             Color.FromArgb("FF4081"),
-            Color.FromArgb("2d3436"),
+            Color.FromArgb("810CA8"),
+            Color.FromArgb("10A19D"),
             Color.FromArgb("512BD4"),
+            Color.FromArgb("9C254D"),
+            Color.FromArgb("735F32"),
+            Color.FromArgb("CF0A0A"),
+            Color.FromArgb("B2B2B2"),
+            Color.FromArgb("647E68"),
         };
     }
 
@@ -149,6 +155,9 @@ public partial class MainPageViewModel : BaseViewModel
             "PlayfairDisplayRegular",
             "RubikDistressedRegular",
             "UbuntuRegular",
+            "TekoRegular",
+            "AcmeRegular",
+            "PermanentMarkerRegular",
         };
     }
     #endregion

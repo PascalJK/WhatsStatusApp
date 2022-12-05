@@ -13,6 +13,7 @@ public partial class SettingsPage : ContentPage
 
 	protected override bool OnBackButtonPressed()
 	{
+		vm.ClosePageCommand.Execute(null);
 		return true;
 	}
 }
