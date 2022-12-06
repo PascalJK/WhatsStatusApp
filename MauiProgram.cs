@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui;
+using PanCardView;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 
 namespace WhatsStatusApp;
@@ -12,6 +13,7 @@ public static class MauiProgram
 			.UseMauiApp<App>()
 			.UseSkiaSharp()
 			.UseMauiCommunityToolkit()
+			.UseCardsView()
 			.ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

@@ -84,6 +84,9 @@
 	  <Compile Update="Views\ContentViews\StatusEditorView.xaml.cs">
 	    <DependentUpon>StatusEditorView.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="Views\Popups\StatusCarouselPopup.xaml.cs">
+	    <DependentUpon>StatusCarouselPopup.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -91,6 +94,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\ContentViews\MainView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Popups\StatusCarouselPopup.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\ContentViews\StatusEditorView.xaml">
@@ -105,6 +111,24 @@
 	  <MauiXaml Update="Views\SettingsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0-android'">
+	  <PackageReference Include="CardsView.Maui">
+	    <Version>0.0.2</Version>
+	  </PackageReference>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0-ios'">
+	  <PackageReference Include="CardsView.Maui">
+	    <Version>0.0.2</Version>
+	  </PackageReference>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0-maccatalyst'">
+	  <PackageReference Include="CardsView.Maui">
+	    <Version>0.0.2</Version>
+	  </PackageReference>
 	</ItemGroup>
 
 </Project>

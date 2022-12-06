@@ -80,6 +80,12 @@
         <Setter Property="TextColor" Value="WhiteSmoke" />
     </Style>
 
+    <Style TargetType="IndicatorView">
+        <Setter Property="HorizontalOptions" Value="Center" />
+        <Setter Property="IndicatorColor" Value="{StaticResource White}" />
+        <Setter Property="SelectedIndicatorColor" Value="{StaticResource Tertiary}" />
+    </Style>
+
     <!--#region Labels-->
     <Style x:Key="LabelStyle" TargetType="Label">
         <Setter Property="TextColor" Value="{StaticResource White}" />
@@ -145,17 +151,7 @@
     </Style>
     <!--#endregion-->
 
-    <Style TargetType="RefreshView">
-        <Setter Property="RefreshColor" Value="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource Gray200}}" />
-    </Style>
-
-    <Style TargetType="Shadow">
-        <Setter Property="Radius" Value="15" />
-        <Setter Property="Opacity" Value="0.5" />
-        <Setter Property="Brush" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource White}}" />
-        <Setter Property="Offset" Value="10,10" />
-    </Style>
-
+    <!--#region Pages-->
     <Style ApplyToDerivedTypes="True" TargetType="Page">
         <Setter Property="Padding" Value="0" />
         <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
@@ -165,13 +161,7 @@
         <Setter Property="Shell.BackgroundColor" Value="{StaticResource Primary}" />
         <Setter Property="Shell.ForegroundColor" Value="{StaticResource White}" />
         <Setter Property="Shell.TitleColor" Value="{StaticResource White}" />
-        <Setter Property="Shell.DisabledColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray950}}" />
-        <Setter Property="Shell.UnselectedColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray200}}" />
         <Setter Property="Shell.NavBarHasShadow" Value="True" />
-        <Setter Property="Shell.TabBarBackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}" />
-        <Setter Property="Shell.TabBarForegroundColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}" />
-        <Setter Property="Shell.TabBarTitleColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}" />
-        <Setter Property="Shell.TabBarUnselectedColor" Value="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource Gray200}}" />
     </Style>
 
     <Style TargetType="NavigationPage">
@@ -179,5 +169,6 @@
         <Setter Property="BarTextColor" Value="{StaticResource White}" />
         <Setter Property="IconColor" Value="{StaticResource White}" />
     </Style>
+    <!--#endregion-->
 
 </ResourceDictionary>
