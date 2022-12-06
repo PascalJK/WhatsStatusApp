@@ -1,4 +1,7 @@
-﻿namespace WhatsStatusApp.ViewModels;
+﻿using CommunityToolkit.Maui.Views;
+using WhatsStatusApp.Views.Popups;
+
+namespace WhatsStatusApp.ViewModels;
 
 public partial class MainPageViewModel : BaseViewModel
 {
@@ -51,10 +54,6 @@ public partial class MainPageViewModel : BaseViewModel
         IsBusy = false;
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <returns></returns>
     public override async Task OnBackButtonPressed()
     {
         if (!string.IsNullOrWhiteSpace(StatusText))
@@ -66,13 +65,13 @@ public partial class MainPageViewModel : BaseViewModel
         DismissStatusEditor();
     }
 
+    #region StatusEditor
     void CheckStatusTextLength()
     {
         if (IsTextLimited && StatusText.Length >= textMaxLength)
             Shell.Current.DisplayAlert("Input Limit", $"Your status cannot exceed {textMaxLength} characters.", "OK").Wait(300);
     }
 
-    #region StatusEditor
     void DismissStatusEditor()
     {
         StatusText = string.Empty;
@@ -172,6 +171,15 @@ public partial class MainPageViewModel : BaseViewModel
     async Task LoadStatusDetailAsync(Status status)
         => await RunTryCatchAsync(async ()
             => await ShellGoToAsync(nameof(DetailsPage), new Dictionary<string, object> { { nameof(Status), status } }));
+
+    /// <summary>
+    /// Shows a popup with all status data grouped by date
+    /// </summary>
+    /// <param name="statuses"></param>
+    [RelayCommand]
+    async Task LoadStatusGroupData(StatusGroup statuses)
+        => await RunTryCatchAsync(async ()
+            => await Shell.Current.ShowPopupAsync(new StatusCarouselPopup(statuses)));
     #endregion
 
     [RelayCommand]

@@ -9,7 +9,7 @@
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:viewmodel="clr-namespace:WhatsStatusApp.ViewModels"
     x:DataType="viewmodel:MainPageViewModel"
-    BackgroundColor="{StaticResource Black}">
+    BackgroundColor="{StaticResource Primary}">
 
     <ContentView.Resources>
         <Style
@@ -18,6 +18,34 @@
             TargetType="Label">
             <Setter Property="FontSize" Value="45" />
         </Style>
+
+        <DataTemplate x:Key="StatusGroupDataTemplate" x:DataType="model:StatusGroup">
+            <Grid Padding="0,2" ColumnDefinitions="*, auto">
+                <Label
+                    Grid.ColumnSpan="2"
+                    FontAttributes="Bold"
+                    FontFamily="UbuntuRegular"
+                    HorizontalTextAlignment="Center"
+                    Text="{Binding Date, StringFormat='{0:d MMMM yyyy}'}"
+                    VerticalOptions="Center" />
+                <Frame
+                    Grid.Column="1"
+                    Margin="0,0,15,0"
+                    Padding="8,3"
+                    CornerRadius="5"
+                    IsVisible="{OnPlatform Default=true,
+                                           WinUI=false}">
+                    <Label
+                        FontSize="25"
+                        HorizontalOptions="Center"
+                        Style="{StaticResource FontLabelStyle}"
+                        Text="{x:Static fonts:MaterialDesignIcons.ViewCarouselOutline}" />
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainPageViewModel}}, Path=LoadStatusGroupDataCommand}" CommandParameter="{Binding .}" />
+                    </Frame.GestureRecognizers>
+                </Frame>
+            </Grid>
+        </DataTemplate>
 
         <DataTemplate x:Key="StatusDataTemplate" x:DataType="model:Status">
             <Frame
@@ -62,19 +90,11 @@
         <CollectionView
             Grid.Row="1"
             Grid.ColumnSpan="2"
+            BackgroundColor="{StaticResource Black}"
+            GroupHeaderTemplate="{StaticResource StatusGroupDataTemplate}"
             IsGrouped="True"
             ItemTemplate="{StaticResource StatusDataTemplate}"
             ItemsSource="{Binding StatusGroupCollection}">
-            <CollectionView.GroupHeaderTemplate>
-                <DataTemplate x:DataType="model:StatusGroup">
-                    <Label
-                        Margin="0,3"
-                        FontAttributes="Bold"
-                        FontFamily="UbuntuRegular"
-                        HorizontalTextAlignment="Center"
-                        Text="{Binding Date, StringFormat='{0:d MMMM yyyy}'}" />
-                </DataTemplate>
-            </CollectionView.GroupHeaderTemplate>
             <CollectionView.ItemsLayout>
                 <GridItemsLayout
                     Orientation="Vertical"
@@ -93,6 +113,7 @@
         <VerticalStackLayout
             Grid.Row="1"
             Grid.ColumnSpan="2"
+            BackgroundColor="{StaticResource Black}"
             HorizontalOptions="Center"
             IsVisible="{Binding IsStatusListEmpty}">
             <skia:SKLottieView
