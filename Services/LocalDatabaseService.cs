@@ -10,7 +10,9 @@ internal class LocalDatabaseService : ILocalDatabase
 
     private async Task InitializeDatabase()
     {
-        if (database is not null) return;
+        if (database is not null) 
+            return;
+
         var databasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "whatsStatus.db3");
         database = new SQLiteAsyncConnection(databasePath);
         await database.CreateTableAsync<Status>();
@@ -28,7 +30,27 @@ internal class LocalDatabaseService : ILocalDatabase
         await database.DeleteAsync<Status>(status.Id);
     }
 
+    /// <summary>
+    /// To be implemented... [F.F]
+    /// </summary>
+    /// <param name="status"></param>
+    /// <returns></returns>
+    /// <exception cref="NotImplementedException"></exception>
     public Task FindStatusAsync(Status status) => throw new NotImplementedException();
+
+    public async Task<List<StatusGroup>> GetGroupedStatusListAsync()
+    {
+        List<StatusGroup> statusGroupCollection = new();
+
+        var list = await GetStatusListAsync();
+
+        var groups = list?.GroupBy(s => s.DateCreated.Date).OrderByDescending(s => s.Key);
+
+        foreach (var l2 in groups)
+            statusGroupCollection.Add(new StatusGroup(l2.Key, l2.OrderByDescending(s => s.DateCreated).ToList()));
+
+        return statusGroupCollection;
+    }
 
     public async Task<List<Status>> GetStatusListAsync()
     {
@@ -36,6 +58,11 @@ internal class LocalDatabaseService : ILocalDatabase
         return await database.Table<Status>().ToListAsync();
     }
 
+    /// <summary>
+    /// Future Feature [F.F]
+    /// </summary>
+    /// <param name="status"></param>
+    /// <returns></returns>
     public async Task UpdateStatusAsync(Status status)
     {
         await InitializeDatabase();
