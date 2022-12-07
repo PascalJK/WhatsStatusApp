@@ -110,38 +110,38 @@
             </CollectionView.Footer>
         </CollectionView>
 
-        <VerticalStackLayout
+        <Grid
             Grid.Row="1"
             Grid.ColumnSpan="2"
             BackgroundColor="{StaticResource Black}"
             HorizontalOptions="Center"
-            IsVisible="{Binding IsStatusListEmpty}">
-            <skia:SKLottieView
-                HeightRequest="350"
-                RepeatCount="-1"
-                Source="empty_list.json"
-                WidthRequest="350" />
+            IsVisible="{Binding IsStatusListEmpty}"
+            RowDefinitions="*, auto, auto"
+            VerticalOptions="CenterAndExpand">
+            <Image Source="dotnet_bot.svg" VerticalOptions="Center" />
             <Label
+                Grid.Row="1"
                 HorizontalOptions="Center"
                 HorizontalTextAlignment="Center"
                 Style="{StaticResource LabelSubtitle}"
                 Text="Nothing to show" />
             <Label
+                Grid.Row="2"
                 Margin="30,0"
                 HorizontalOptions="Center"
                 HorizontalTextAlignment="Center">
                 <Label.FormattedText>
                     <FormattedString>
-                        <Span Text="You don't have any statuses saved, " />
+                        <Span Text="You don't have any statuses saved, click the " />
                         <Span
-                            Text="click here"
-                            TextColor="DodgerBlue"
-                            TextDecorations="Underline" />
-                        <Span Text=" to add your first :)" />
+                            FontSize="20"
+                            Text="+"
+                            TextColor="{StaticResource Primary}" />
+                        <Span Text=" icon to add your first :)" />
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
-        </VerticalStackLayout>
+        </Grid>
 
         <VerticalStackLayout
             Grid.Row="1"
