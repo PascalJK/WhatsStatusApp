@@ -201,15 +201,9 @@ public partial class MainPageViewModel : BaseViewModel
     [RelayCommand]
     async Task GetSavedStatusListAsync()
     {
-        List<StatusGroup> statusGroupCollection = new();
+        var list = await LocalDatabaseService.LocalDB.GetGroupedStatusListAsync();
 
-        var list = await LocalDatabaseService.LocalDB.GetStatusListAsync();
-        var groups = list?.GroupBy(s => s.DateCreated.Date).OrderByDescending(s => s.Key);
-
-        foreach (var l2 in groups)
-            statusGroupCollection.Add(new StatusGroup(l2.Key, l2.OrderByDescending(s => s.DateCreated).ToList()));
-
-        StatusGroupCollection.ReplaceRange(statusGroupCollection);
+        StatusGroupCollection.ReplaceRange(list);
         IsStatusListEmpty = list.Count <= 0;
     }
 }
