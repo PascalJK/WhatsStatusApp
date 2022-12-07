@@ -12,7 +12,8 @@
     BackgroundColor="{Binding StatusModel.Color}"
     Shell.BackgroundColor="{Binding StatusModel.Color}"
     Shell.NavBarHasShadow="{Binding HideNavBar, Converter={StaticResource InvertedBoolConverter}}"
-    Shell.NavBarIsVisible="{Binding HideNavBar, Converter={StaticResource InvertedBoolConverter}}">
+    Shell.NavBarIsVisible="{Binding HideNavBar, Converter={StaticResource InvertedBoolConverter}}"
+    SizeChanged="DetailsPage_SizeChanged">
 
     <ContentPage.Resources>
         <DataTemplate x:Key="LinkDataTemplate" x:DataType="model:Link">
@@ -96,7 +97,7 @@
         <Grid
             Grid.RowSpan="2"
             IsVisible="{Binding ShowUrlListView}"
-            RowDefinitions=".7*, *">
+            RowDefinitions=".5*, *">
             <BoxView Grid.RowSpan="2" />
             <Border
                 Grid.Row="1"

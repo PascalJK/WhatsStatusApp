@@ -20,9 +20,9 @@
 
             <HorizontalStackLayout
                 Grid.Row="1"
-                Padding="5,10"
+                Padding="0,10"
                 HorizontalOptions="CenterAndExpand"
-                Spacing="35">
+                Spacing="30">
                 <Label Text="{x:Static fonts:MaterialDesignIcons.ArrowLeftThick}">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Tapped="WebViewGoBack_Tapped" />

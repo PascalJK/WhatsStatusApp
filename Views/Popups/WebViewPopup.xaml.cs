@@ -10,7 +10,7 @@ public partial class WebViewPopup : Popup
     {
         InitializeComponent();
 
-        WeakReferenceMessenger.Default.Register<DisplayInfoChangedEventArgs>(this, (r, m)
+        WeakReferenceMessenger.Default.Register<Window>(this, (r, m)
             => GetDeviceSize());
 
         webview.Navigating += Webview_Navigating;
@@ -63,6 +63,6 @@ public partial class WebViewPopup : Popup
 
     private void Popup_Closed(object sender, CommunityToolkit.Maui.Core.PopupClosedEventArgs e)
     {
-        WeakReferenceMessenger.Default.Unregister<DisplayInfoChangedEventArgs>(this);
+        WeakReferenceMessenger.Default.Unregister<Window>(this);
     }
 }

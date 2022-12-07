@@ -8,7 +8,7 @@ public partial class StatusCarouselPopup : Popup
 	{
 		InitializeComponent();
 
-        WeakReferenceMessenger.Default.Register<DisplayInfoChangedEventArgs>(this, (r, m)
+        WeakReferenceMessenger.Default.Register<Window>(this, (r, m)
             => GetDeviceSize());
 
         GetDeviceSize();
@@ -20,11 +20,11 @@ public partial class StatusCarouselPopup : Popup
     private void GetDeviceSize()
         => popup.Size = App.GetDeviceSize();
 
-    private void Popup_Closed(object sender, CommunityToolkit.Maui.Core.PopupClosedEventArgs e)
-    {
-        WeakReferenceMessenger.Default.Unregister<DisplayInfoChangedEventArgs>(this);
-    }
-
     private void ClosePopup_Tapped(object sender, TappedEventArgs e) 
         => Close();
+
+    private void Popup_Closed(object sender, CommunityToolkit.Maui.Core.PopupClosedEventArgs e)
+    {
+        WeakReferenceMessenger.Default.Unregister<Window>(this);
+    }
 }

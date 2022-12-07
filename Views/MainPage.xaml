@@ -6,7 +6,8 @@
     xmlns:viewmodel="clr-namespace:WhatsStatusApp.ViewModels"
     xmlns:views="clr-namespace:WhatsStatusApp.Views.ContentViews"
     x:DataType="viewmodel:MainPageViewModel"
-    Shell.NavBarIsVisible="False">
+    Shell.NavBarIsVisible="False"
+    SizeChanged="MainPage_SizeChanged">
 
     <Grid>
         <views:MainView IsVisible="{Binding ShowStatusEditor, Converter={StaticResource InvertedBoolConverter}}" />

@@ -9,9 +9,20 @@ public partial class MainPage : ContentPage
 		InitializeComponent();
 		BindingContext = viewModel;
 		vm = viewModel;
-	}
+    }
 
-	protected override bool OnBackButtonPressed()
+    /// <summary>
+    /// Once the page sizechanges the window is updated so once a
+    /// popup is loaded or active it resizes to match window size.
+    /// </summary>
+    private void MainPage_SizeChanged(object sender, EventArgs e)
+    {
+        var g = (ContentPage)sender;
+		App.mobileWindow = g.Window;
+        WeakReferenceMessenger.Default.Send(App.mobileWindow);
+    }
+
+    protected override bool OnBackButtonPressed()
 	{
 		if (vm.ShowStatusEditor)
 		{
@@ -19,8 +30,7 @@ public partial class MainPage : ContentPage
 				=> await vm.OnBackButtonPressed());
 			return true;
 		}
-		else
-			return false;
+		return false;
 	}
 }
 
