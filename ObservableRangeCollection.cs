@@ -10,12 +10,10 @@ namespace WhatsStatusApp;
 /// <typeparam name="T"></typeparam> 
 public class ObservableRangeCollection<T> : ObservableCollection<T>
 {
-
     /// <summary> 
     /// Initializes a new instance of the System.Collections.ObjectModel.ObservableCollection(Of T) class. 
     /// </summary> 
-    public ObservableRangeCollection()
-        : base()
+    public ObservableRangeCollection() : base()
     {
     }
 
@@ -24,8 +22,7 @@ public class ObservableRangeCollection<T> : ObservableCollection<T>
     /// </summary> 
     /// <param name="collection">collection: The collection from which the elements are copied.</param> 
     /// <exception cref="System.ArgumentNullException">The collection parameter cannot be null.</exception> 
-    public ObservableRangeCollection(IEnumerable<T> collection)
-        : base(collection)
+    public ObservableRangeCollection(IEnumerable<T> collection) : base(collection)
     {
     }
 
@@ -51,16 +48,12 @@ public class ObservableRangeCollection<T> : ObservableCollection<T>
         if (notificationMode == NotifyCollectionChangedAction.Reset)
         {
             RaiseChangeNotificationEvents(action: NotifyCollectionChangedAction.Reset);
-
             return;
         }
 
         var changedItems = collection is List<T> list ? list : new List<T>(collection);
 
-        RaiseChangeNotificationEvents(
-            action: NotifyCollectionChangedAction.Add,
-            changedItems: changedItems,
-            startingIndex: startIndex);
+        RaiseChangeNotificationEvents(action: NotifyCollectionChangedAction.Add, changedItems: changedItems, startingIndex: startIndex);
     }
 
     /// <summary> 
@@ -95,7 +88,7 @@ public class ObservableRangeCollection<T> : ObservableCollection<T>
         {
             if (!Items.Remove(changedItems[i]))
             {
-                changedItems.RemoveAt(i); //Can't use a foreach because changedItems is intended to be (carefully) modified
+                changedItems.RemoveAt(i);
                 i--;
             }
         }
@@ -103,9 +96,7 @@ public class ObservableRangeCollection<T> : ObservableCollection<T>
         if (changedItems.Count == 0)
             return;
 
-        RaiseChangeNotificationEvents(
-            action: NotifyCollectionChangedAction.Remove,
-            changedItems: changedItems);
+        RaiseChangeNotificationEvents(action: NotifyCollectionChangedAction.Remove, changedItems: changedItems);
     }
 
     /// <summary> 
