@@ -32,14 +32,15 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#367E18" />
+		<MauiIcon Include="Resources\AppIcon\appicon.svg" Color="#228C22" />
 
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#367E18" BaseSize="128,128" />
+		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#228C22" BaseSize="128,128" />
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
 		<MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />
+		<MauiImage Update="Resources\Images\empty_box.svg" BaseSize="168,208" />
 
 		<!-- Custom Fonts -->
 		<MauiFont Include="Resources\Fonts\*" />
@@ -56,6 +57,7 @@
 	  <None Remove=".gitattributes" />
 	  <None Remove=".gitignore" />
 	  <None Remove="Resources\Fonts\Acme-Regular.ttf" />
+	  <None Remove="Resources\Fonts\Arial-Rounded-MT-Bold.ttf" />
 	  <None Remove="Resources\Fonts\DancingScript-Regular.ttf" />
 	  <None Remove="Resources\Fonts\IndieFlower-Regular.ttf" />
 	  <None Remove="Resources\Fonts\materialdesignicons.ttf" />
@@ -67,7 +69,7 @@
 	  <None Remove="Resources\Fonts\Ubuntu-Regular.ttf" />
 	  <None Remove="Resources\Raw\empty_list.json" />
 	</ItemGroup>
-
+	
 	<ItemGroup>
 	  <PackageReference Include="CommunityToolkit.Maui" Version="3.0.0" />
 	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />

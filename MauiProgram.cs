@@ -27,6 +27,7 @@ public static class MauiProgram
 				fonts.AddFont("Teko-Regular.ttf", "TekoRegular");
 				fonts.AddFont("Acme-Regular.ttf", "AcmeRegular");
 				fonts.AddFont("PermanentMarker-Regular.ttf", "PermanentMarkerRegular");
+				fonts.AddFont("Arial-Rounded-MT-Bold.ttf", "ArialRoundedMTBold");
 				fonts.AddFont("materialdesignicons.ttf", "MDI");
 			});
 
