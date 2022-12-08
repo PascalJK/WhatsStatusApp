@@ -52,7 +52,7 @@
                 Margin="3,0"
                 Padding="10"
                 BackgroundColor="{Binding Color}"
-                CornerRadius="1">
+                CornerRadius="5">
                 <Grid RowDefinitions="auto, auto">
                     <Label
                         FontFamily="{Binding Font}"
@@ -81,8 +81,7 @@
             Padding="10,5"
             StrokeThickness="0">
             <Label
-                FontAttributes="Bold"
-                FontFamily="PlayfairDisplayRegular"
+                FontFamily="ArialRoundedMTBold"
                 Style="{StaticResource LabelTitle}"
                 Text="Whats Status" />
         </Border>
@@ -90,7 +89,7 @@
         <CollectionView
             Grid.Row="1"
             Grid.ColumnSpan="2"
-            BackgroundColor="{StaticResource Black}"
+            BackgroundColor="{StaticResource Gray900}"
             GroupHeaderTemplate="{StaticResource StatusGroupDataTemplate}"
             IsGrouped="True"
             ItemTemplate="{StaticResource StatusDataTemplate}"
@@ -113,12 +112,12 @@
         <Grid
             Grid.Row="1"
             Grid.ColumnSpan="2"
-            BackgroundColor="{StaticResource Black}"
+            BackgroundColor="{StaticResource Gray900}"
             HorizontalOptions="Center"
             IsVisible="{Binding IsStatusListEmpty}"
             RowDefinitions="*, auto, auto"
             VerticalOptions="CenterAndExpand">
-            <Image Source="dotnet_bot.svg" VerticalOptions="Center" />
+            <Image Source="empty_box.svg" VerticalOptions="Center" />
             <Label
                 Grid.Row="1"
                 HorizontalOptions="Center"

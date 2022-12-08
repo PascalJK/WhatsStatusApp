@@ -126,7 +126,6 @@ public partial class MainPageViewModel : BaseViewModel
         return new List<Color>()
         {
             Color.FromArgb("2980B9"),
-            Color.FromArgb("27AE60"),
             Color.FromArgb("D35400"),
             Color.FromArgb("2d3436"),
             Color.FromArgb("FFC107"),
