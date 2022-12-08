@@ -15,7 +15,7 @@
 		<ApplicationTitle>WhatsStatus</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.whatsstatusapp</ApplicationId>
+		<ApplicationId>com.lacsapTech.whatsstatusapp</ApplicationId>
 		<ApplicationIdGuid>A60E1CEB-1162-455E-9252-BAD765147D6A</ApplicationIdGuid>
 
 		<!-- Versions -->
