@@ -5,7 +5,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:fonts="clr-namespace:WhatsStatusApp.Resources.Fonts"
     xmlns:model="clr-namespace:WhatsStatusApp.Models"
-    xmlns:skia="clr-namespace:SkiaSharp.Extended.UI.Controls;assembly=SkiaSharp.Extended.UI"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:viewmodel="clr-namespace:WhatsStatusApp.ViewModels"
     x:DataType="viewmodel:MainPageViewModel"
