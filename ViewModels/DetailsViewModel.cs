@@ -25,22 +25,18 @@ public partial class DetailsViewModel : BaseViewModel
         await RunTryCatchAsync(async () =>
         {
             HideNavBar = true;
-            var option = await Shell.Current.ShowPopupAsync(new StatusOptionsPopup());
 
-            switch ((string)option)
-            {
-                case "delete":
-                    await DeleteStatusAsync();
-                    break;
-                case "share":
-                    await ShareStatusTextAsync();
-                    break;
-                case "links":
-                    await PreviewLinksAsync();
-                    break;
-                default:
-                    break;
-            }
+            var options = new[] { "Delete", "Share", "View Links" };
+            var option = await Shell.Current.DisplayActionSheet("Status Options", "Cancel", null, options);
+
+            if (string.IsNullOrWhiteSpace(option))
+                return;
+            else if (option.Equals(options[0]))
+                await DeleteStatusAsync();
+            else if (option.Equals(options[1]))
+                await ShareStatusTextAsync();
+            else if (option.Equals(options[2]))
+                await PreviewLinksAsync();
         });
         HideNavBar = false;
     }
